@@ -5,15 +5,7 @@ import { MaterialTableComponent } from './components/material-table/material-tab
 import { AuthServiceService } from './components/autentification/auth-service.service';
 import { StudentInfoTableComponent } from './components/student-info-table/studentInfoTable.component';
 
-const routes: Routes = [/*
-  {path: 'login', component: LoginAuthComponent, data: {title: 'login'}},
-  {path: '', component: LoginAuthComponent, canActivateChild: [LoginAuthComponent],
-    children: [
-      { path: 'students', component: MaterialTableComponent, data: {title: 'students', role: ['STUDENT']}},
-      { path: 'ONEStudent', component: StudentInfoTableComponent},
-    ]
-   }*/
-
+const routes: Routes = [
   { path: 'login', component: LoginAuthComponent },
   { path: '',  redirectTo: '/login', pathMatch: 'full'},
   { path: 'students', component: MaterialTableComponent, canActivate: [LoginAuthComponent]},

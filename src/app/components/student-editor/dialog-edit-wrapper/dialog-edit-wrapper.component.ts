@@ -14,7 +14,6 @@ export class DialogEditWrapperComponent implements OnInit{
 
   constructor(public dialogRef: MatDialogRef<DialogEditWrapperComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Student)
-    //@Inject(String) private url: string, private http: HttpClient
   {
     this.editingStudent = new Student();
   }

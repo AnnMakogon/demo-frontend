@@ -13,10 +13,6 @@ import { LogoutAuthComponent } from '../autentification/logout-auth/logout-auth.
 import { AuthServiceService } from '../autentification/auth-service.service';
 import { LoginAuthComponent } from '../autentification/login-auth/login-auth.component';
 
-/*@NgModule({
-  providers:[LogoutAuthComponent], //Add it to the import also above
-})*/
-
 @Component({
   selector: 'app-material-table',
   templateUrl: './material-table.component.html',
@@ -120,6 +116,5 @@ export class MaterialTableComponent implements OnInit{
     debugger;
     console.log("Role from materialTable: " + this.loginAuth.getRole());
   }
-
 
 }

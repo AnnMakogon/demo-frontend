@@ -1,13 +1,9 @@
-import { BaseServiceService } from 'src/app/service/base-service.service';
-//import { Component, Inject } from '@angular/core';
-//import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { User } from 'src/app/models/user';
 import { Component, Inject, Injectable, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { AuthServiceService } from '../auth-service.service';
-import { ActivatedRouteSnapshot, CanActivate, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({
   providedIn:'root'
@@ -35,11 +31,6 @@ export class LoginAuthComponent{
     this.editingUser = new User();
     this.role = "";
   }
-
-  /*async login() {
-    const func1 = await this.loginn();
-    debugger;
-  }*/
 
   login():void{
     debugger
