@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Put(Apdate) Student</h1>
+<div mat-dialog-content style="display: online; padding: 0px; margin:auto">
+
+  <mat-form-field class="full-width-input">
+    <input matInput type="text" placeholder="New Name of Student"
+    [(ngModel)]="editingStudent.fio" required>
+  </mat-form-field>
+  <mat-form-field classs="full-width-input">
+    <input matInput type="text" placeholder="New Surname of Student"
+    [(ngModel)]="editingStudent.group" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="phoneNumber of student"
+      [(ngModel)]="editingStudent.phoneNumber" required>
+   </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button class="right-align" mat-raised-button color="primary"
+    [mat-dialog-close]="editingStudent">Update</button>
+</div>

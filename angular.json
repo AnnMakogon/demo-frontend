@@ -71,6 +71,9 @@
               "browserTarget": "firstApp:build:development"
             }
           },
+          "options": {
+            "proxyConfig": "proxy.conf.ts"
+          },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
@@ -100,5 +103,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "14e0b31b-8b1f-4cd5-b5b8-f887b0aee142"
   }
 }
