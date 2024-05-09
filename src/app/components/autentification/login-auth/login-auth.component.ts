@@ -33,7 +33,7 @@ export class LoginAuthComponent{
   }
 
   login():void{
-    debugger
+    //debugger
     console.log("full User: " + this.editingUser.role)
     this.authService.loginUser(this.editingUser)
     .subscribe(
@@ -51,7 +51,7 @@ export class LoginAuthComponent{
         this.editingUser.role = roleJSON.role;
         console.log('Role: ' + this.role);
         console.log("this.editingUser: " +  this.editingUser.role)
-        debugger;
+        //debugger;
       }
     );
   }

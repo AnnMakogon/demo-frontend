@@ -26,7 +26,6 @@ export class AuthServiceService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Basic ' + Base64.encode(np)
-
     });
 
     const postData = {

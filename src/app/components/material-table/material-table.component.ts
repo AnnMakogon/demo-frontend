@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogEditWrapperComponent } from '../student-editor/dialog-edit-wrapper/dialog-edit-wrapper.component';
 import { PutDialogEditWrapperComponent } from '../student-editor/put-dialog-edit-wrapper/put-dialog-edit-wrapper.component';
 
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Sort, MatSortModule, MatSort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -21,12 +21,20 @@ import { LoginAuthComponent } from '../autentification/login-auth/login-auth.com
 })
 export class MaterialTableComponent implements OnInit{
 
+  totalDataLength: number = 100;
+  pageSize = 10;
+  pageSizeOptions: number[] = [5, 10, 25, 50];
+  startIndex = 0;
+  endIndex = this.pageSize;
+
+  lastClickedColumn: string = 'id';
+
   displayedColumns: string[] = ['demo-id', 'demo-name', 'demo-surname', 'demo-phoneNumber', 'demo-action'];
 
   dataSource = new MatTableDataSource<Student>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  //@ViewChild(MatPaginator) paginator!: MatPaginator;
+  //@ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private baseService : BaseServiceService,
@@ -40,15 +48,34 @@ export class MaterialTableComponent implements OnInit{
 
   ngOnInit(): void{
     console.log ("Material Table Component");
-    this.updateData();
+    this.updateData(this.startIndex, this.endIndex);
   }
 
-  updateData() {
-
-    this.baseService.getAllStudents().subscribe( data => {
+  onPageChange(event: PageEvent) {
+    this.startIndex = event.pageIndex * event.pageSize;
+    this.endIndex = this.startIndex + event.pageSize;
+    if(this.endIndex > this.totalDataLength) {
+      this.endIndex = this.totalDataLength;
+    }
+    console.log(`Загрузка данных для элементов с ${this.startIndex} по ${this.endIndex}`);
+    this.baseService.getStudentsPag(this.startIndex, this.endIndex).subscribe( data => {
       this.dataSource.data = data;
-      this.dataSource.paginator = this.paginator; //сделать на фронте пагинацию и фильтрацию
-      this.dataSource.sort = this.sort;
+      this.totalDataLength = this.baseService.totalLength;
+      debugger;
+    });;
+  }
+
+  onColumnHeaderClick(columnName: string): void {
+    this.lastClickedColumn = columnName;
+    console.log("выбрана колонка " + this.lastClickedColumn);
+    this.updateData(this.startIndex, this.endIndex);
+  }
+
+  updateData(start: Number, end: Number) {
+    this.baseService.getStudentsPag(start, end, this.lastClickedColumn).subscribe( data => {
+      this.dataSource.data = data;
+      this.totalDataLength = this.baseService.totalLength;
+      debugger;
     });
   }
 
@@ -79,7 +106,11 @@ export class MaterialTableComponent implements OnInit{
       if(result != null) {
         console.log ("adding new student: " + result.fio);
         this.baseService.addNewStudent(result).subscribe( () => {
-           this.updateData();
+          this.baseService.getStudentsPag(this.startIndex, this.endIndex).subscribe( data => {
+            this.dataSource.data = data;
+            this.totalDataLength = this.baseService.totalLength;
+            debugger;
+          });;
         });
       }
     });
@@ -93,8 +124,12 @@ export class MaterialTableComponent implements OnInit{
     dialogPutStudent.afterClosed().subscribe((result : Student) => {
       if(result != null) {
         console.log ("puting student: " + student.fio);
-        this.baseService.putStudent(result, student.id).subscribe( () =>{
-          this.updateData();
+        this.baseService.updateStudent(result, student.id).subscribe( () =>{
+          this.baseService.getStudentsPag(this.startIndex, this.endIndex).subscribe( data => {
+            this.dataSource.data = data;
+            this.totalDataLength = this.baseService.totalLength;
+            debugger;
+          });;
        });
       }
     });
@@ -104,7 +139,11 @@ export class MaterialTableComponent implements OnInit{
     console.log("delete student");
     const id = Number(student.id);
     this.baseService.deleteStudent(id).subscribe( () =>{
-      this.updateData();
+      this.baseService.getStudentsPag(this.startIndex, this.endIndex).subscribe( data => {
+        this.dataSource.data = data;
+        this.totalDataLength = this.baseService.totalLength;
+        debugger;
+      });;
    });
   }
 

@@ -7,22 +7,22 @@
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
 
     <ng-container matColumnDef="demo-id">
-      <th mat-header-cell mat-sort-header="id" *matHeaderCellDef> ID </th>
+      <th mat-header-cell mat-sort-header="id" *matHeaderCellDef (click)="onColumnHeaderClick('id')"> ID </th>
       <td mat-cell *matCellDef="let student"> {{student.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="demo-name">
-      <th mat-header-cell mat-sort-header="fio" *matHeaderCellDef> Name </th>
+      <th mat-header-cell mat-sort-header="fio" *matHeaderCellDef (click)="onColumnHeaderClick('fio')"> Fio </th>
       <td mat-cell *matCellDef="let student"> {{student.fio}} </td>
     </ng-container>
 
     <ng-container matColumnDef="demo-surname">
-      <th mat-header-cell mat-sort-header="group" *matHeaderCellDef> Surname </th>
+      <th mat-header-cell mat-sort-header="group" *matHeaderCellDef (click)="onColumnHeaderClick('group')"> Group </th>
       <td mat-cell *matCellDef="let student"> {{student.group}} </td>
     </ng-container>
 
     <ng-container matColumnDef="demo-phoneNumber">
-      <th mat-header-cell mat-sort-header="phoneNumber" *matHeaderCellDef> PhoneNumber </th>
+      <th mat-header-cell mat-sort-header="phoneNumber" *matHeaderCellDef (click)="onColumnHeaderClick('phoneNumber')"> PhoneNumber </th>
       <td mat-cell *matCellDef="let student"> {{student.phoneNumber}} </td>
     </ng-container>
 
@@ -40,14 +40,16 @@
 
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 15]"
+  <mat-paginator
+              [length]="totalDataLength"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="onPageChange($event)"
                showFirstLastButtons
                aria-label="Select page of Students">
   </mat-paginator>
 
   <button mat-raised-button (click)="addNewStudent()">Add New Student</button>
-
-  <button mat-raised-button (click)="getRole()">Get Role</button>
 
 </div>
 

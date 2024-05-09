@@ -8,8 +8,8 @@ import { StudentInfoTableComponent } from './components/student-info-table/stude
 const routes: Routes = [
   { path: 'login', component: LoginAuthComponent },
   { path: '',  redirectTo: '/login', pathMatch: 'full'},
-  { path: 'students', component: MaterialTableComponent, canActivate: [LoginAuthComponent]},
-  { path: 'profile?id', component: StudentInfoTableComponent, canActivate: [LoginAuthComponent]}
+  { path: 'students', component: MaterialTableComponent/*, canActivate: [LoginAuthComponent]*/},
+  { path: 'profile?id', component: StudentInfoTableComponent/*, canActivate: [LoginAuthComponent]*/}
 ];
 
 @NgModule({

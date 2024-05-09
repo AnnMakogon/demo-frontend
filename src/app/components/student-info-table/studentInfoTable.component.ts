@@ -11,7 +11,7 @@ import { PutDialogEditWrapperComponent } from '../student-editor/put-dialog-edit
 @Component({
   selector: 'app-studentInfoTable',
   templateUrl: './studentInfoTable.component.html',
-  styleUrls: ['./studentInfoTable.component.css']
+  styleUrls: ['./studentInfoTable.component.scss']
 })
 export class StudentInfoTableComponent implements OnInit {
 
@@ -35,7 +35,7 @@ export class StudentInfoTableComponent implements OnInit {
     this.updateData();
   }
   updateData() {
-    this.baseService.getAllStudents().subscribe( data => {
+    this.baseService.getStudentsPag(1, 1, "id").subscribe( data => {
       this.dataSource.data = data;
     });}
   updateStudent(student : Student): void {
@@ -46,7 +46,7 @@ export class StudentInfoTableComponent implements OnInit {
     dialogPutStudent.afterClosed().subscribe((result : Student) => {
       if(result != null) {
         console.log ("puting student: " + student.fio);
-        this.baseService.putStudent(result, student.id).subscribe( () =>{
+        this.baseService.updateStudent(result, student.id).subscribe( () =>{
           this.updateData();
        });
       }

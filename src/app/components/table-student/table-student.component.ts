@@ -21,7 +21,7 @@ export class TableStudentComponent implements OnInit {
 
   ngOnInit(): void{
     console.log("TableStudentComponent");
-    this.baseService.getAllStudents().subscribe(data => this.students = data);
+    this.baseService.getStudentsPag(1, 5, "id").subscribe(data => this.students = data);
   }
 
   addNewStudent(): void {
@@ -33,7 +33,7 @@ export class TableStudentComponent implements OnInit {
       if(result != null) {
         console.log("adding new student: " + result.fio);
         this.baseService.addNewStudent(result).subscribe( k =>
-          this.baseService.getAllStudents().subscribe(data => this.students = data) );
+          this.baseService.getStudentsPag(1, 5, "id").subscribe(data => this.students = data) );
       }
     });
   }
@@ -47,8 +47,8 @@ export class TableStudentComponent implements OnInit {
       console.log("Put student");
       if(result != null) {
         console.log ("puting student: " + student.id);
-        this.baseService.putStudent(result, student.id).subscribe( () =>
-          this.baseService.getAllStudents().subscribe(data => this.students = data) );
+        this.baseService.updateStudent(result, student.id).subscribe( () =>
+          this.baseService.getStudentsPag(1, 5, "id").subscribe(data => this.students = data) );
       }
     });
   }
@@ -57,7 +57,7 @@ export class TableStudentComponent implements OnInit {
     console.log ("delete student");
     const id = Number(student.id);
     this.baseService.deleteStudent(id).subscribe( () =>
-      this.baseService.getAllStudents().subscribe(data => this.students = data) );
+      this.baseService.getStudentsPag(1, 5, "id").subscribe(data => this.students = data) );
   }
 
 }
