@@ -15,26 +15,48 @@ export class BaseServiceService {
 
   private studentsUrl = 'api/base/students/';
 
-  public totalLength: number = 10;
+  public totalLength: number = 0;
+
+  public column: String | undefined;
+  public filter: String | undefined;
 
   constructor( private http: HttpClient ) { }
 
-  getStudentsPag(start: Number, end: Number, column?: String): Observable<Student[]> {
+  getStudentsPag(start: Number, end: Number, column?: String, filter?: String): Observable<Student[]> {
+    this.column = column;
+    this.filter = filter;
+
     let params = new HttpParams();
     params = params.append('start', start.toString());
     params = params.append('end', end.toString());
 
+    this.getFullLength();
 
-    this.http.get<number>('api/base/length').subscribe((length: number) =>{
-    this.totalLength = length;
-    debugger;})
     debugger
-    if (column != undefined){
-    params = params.append('sort', column.toString());
+    if (this.column != undefined){
+      params = params.append('sort', this.column.toString());
     }else{
-      params = params.append('sort', "id");
+      params = params.append('sort', "");
+    }
+
+    if (this.filter != undefined){
+      params = params.append('filter', this.filter.toString());
+    }else{
+      params = params.append('filter', "");
     }
     return this.http.get<Student[]>(this.studentsUrl, {params});
+  }
+
+  getFullLength():void{
+    this.http.get<number>('api/base/fulllength').subscribe((length: number) =>{
+      this.totalLength = length;
+      debugger;})
+  }
+
+  getLength(): void {
+    this.http.get<number>('api/base/length').subscribe((length: number) =>{
+      this.totalLength = length;
+      debugger;})
   }
 
   addNewStudent(student: Student): Observable<Student> {

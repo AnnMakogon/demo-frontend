@@ -21,7 +21,7 @@ import { LoginAuthComponent } from '../autentification/login-auth/login-auth.com
 })
 export class MaterialTableComponent implements OnInit{
 
-  totalDataLength: number = 100;
+  totalDataLength: number = 0;
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 25, 50];
   startIndex = 0;
@@ -29,12 +29,11 @@ export class MaterialTableComponent implements OnInit{
 
   lastClickedColumn: string = 'id';
 
+  filterValue: string | undefined = "";
+
   displayedColumns: string[] = ['demo-id', 'demo-name', 'demo-surname', 'demo-phoneNumber', 'demo-action'];
 
   dataSource = new MatTableDataSource<Student>;
-
-  //@ViewChild(MatPaginator) paginator!: MatPaginator;
-  //@ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private baseService : BaseServiceService,
@@ -58,11 +57,7 @@ export class MaterialTableComponent implements OnInit{
       this.endIndex = this.totalDataLength;
     }
     console.log(`Загрузка данных для элементов с ${this.startIndex} по ${this.endIndex}`);
-    this.baseService.getStudentsPag(this.startIndex, this.endIndex).subscribe( data => {
-      this.dataSource.data = data;
-      this.totalDataLength = this.baseService.totalLength;
-      debugger;
-    });;
+    this.updateData(this.startIndex, this.endIndex);
   }
 
   onColumnHeaderClick(columnName: string): void {
@@ -72,7 +67,7 @@ export class MaterialTableComponent implements OnInit{
   }
 
   updateData(start: Number, end: Number) {
-    this.baseService.getStudentsPag(start, end, this.lastClickedColumn).subscribe( data => {
+    this.baseService.getStudentsPag(start, end, "", this.filterValue).subscribe( data => {
       this.dataSource.data = data;
       this.totalDataLength = this.baseService.totalLength;
       debugger;
@@ -88,12 +83,14 @@ export class MaterialTableComponent implements OnInit{
   }
 
   filterData( event: Event ) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.filterValue = (event.target as HTMLInputElement).value;
 
-    if(this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.baseService.getStudentsPag(this.startIndex, this.pageSize, "", this.filterValue).subscribe( data => {
+      this.dataSource.data = data;
+      debugger;
+      this.baseService.getLength();
+      debugger;
+    });
   }
 
 
@@ -106,11 +103,7 @@ export class MaterialTableComponent implements OnInit{
       if(result != null) {
         console.log ("adding new student: " + result.fio);
         this.baseService.addNewStudent(result).subscribe( () => {
-          this.baseService.getStudentsPag(this.startIndex, this.endIndex).subscribe( data => {
-            this.dataSource.data = data;
-            this.totalDataLength = this.baseService.totalLength;
-            debugger;
-          });;
+          this.updateData(this.startIndex, this.endIndex);
         });
       }
     });
@@ -125,11 +118,7 @@ export class MaterialTableComponent implements OnInit{
       if(result != null) {
         console.log ("puting student: " + student.fio);
         this.baseService.updateStudent(result, student.id).subscribe( () =>{
-          this.baseService.getStudentsPag(this.startIndex, this.endIndex).subscribe( data => {
-            this.dataSource.data = data;
-            this.totalDataLength = this.baseService.totalLength;
-            debugger;
-          });;
+          this.updateData(this.startIndex, this.endIndex);
        });
       }
     });
@@ -139,11 +128,7 @@ export class MaterialTableComponent implements OnInit{
     console.log("delete student");
     const id = Number(student.id);
     this.baseService.deleteStudent(id).subscribe( () =>{
-      this.baseService.getStudentsPag(this.startIndex, this.endIndex).subscribe( data => {
-        this.dataSource.data = data;
-        this.totalDataLength = this.baseService.totalLength;
-        debugger;
-      });;
+      this.updateData(this.startIndex, this.endIndex);
    });
   }
 
