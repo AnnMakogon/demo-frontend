@@ -22,15 +22,15 @@ export class BaseServiceService {
 
   constructor( private http: HttpClient ) { }
 
-  getStudentsPag(start: Number, end: Number, column?: String, filter?: String): Observable<Student[]> {
+  getStudentsPag(page: Number, size: Number, column?: String, filter?: String): Observable<Student[]> {
     this.column = column;
     this.filter = filter;
 
     let params = new HttpParams();
-    params = params.append('start', start.toString());
-    params = params.append('end', end.toString());
+    params = params.append('page', page.toString());
+    params = params.append('size', size.toString());
 
-    this.getFullLength();
+    //this.getFullLength();
 
     debugger
     if (this.column != undefined){
@@ -47,10 +47,10 @@ export class BaseServiceService {
     return this.http.get<Student[]>(this.studentsUrl, {params});
   }
 
-  getFullLength():void{
-    this.http.get<number>('api/base/fulllength').subscribe((length: number) =>{
+  getFullLength(): Observable<number>{
+    return this.http.get<number>('api/base/fulllength')/*.subscribe((length: number) =>{
       this.totalLength = length;
-      debugger;})
+      debugger;})*/
   }
 
   getLength(): void {

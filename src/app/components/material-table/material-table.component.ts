@@ -21,19 +21,25 @@ import { LoginAuthComponent } from '../autentification/login-auth/login-auth.com
 })
 export class MaterialTableComponent implements OnInit{
 
-  totalDataLength: number = 0;
-  pageSize = 10;
+  pageNum: number = 0;
+
+  totalDataLength: number = 11;
+  pageSize: number = 10;
   pageSizeOptions: number[] = [5, 10, 25, 50];
-  startIndex = 0;
+  startIndex: number = 0;
   endIndex = this.pageSize;
 
-  lastClickedColumn: string = 'id';
+  countColumn: number = 0;
+
+  lastClickedColumn: string = "";
 
   filterValue: string | undefined = "";
 
   displayedColumns: string[] = ['demo-id', 'demo-name', 'demo-surname', 'demo-phoneNumber', 'demo-action'];
 
   dataSource = new MatTableDataSource<Student>;
+
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private baseService : BaseServiceService,
@@ -47,34 +53,64 @@ export class MaterialTableComponent implements OnInit{
 
   ngOnInit(): void{
     console.log ("Material Table Component");
-    this.updateData(this.startIndex, this.endIndex);
+    this.updateData(this.pageNum, this.pageSize);
   }
 
   onPageChange(event: PageEvent) {
-    this.startIndex = event.pageIndex * event.pageSize;
+    /*this.startIndex = event.pageIndex * event.pageSize;
     this.endIndex = this.startIndex + event.pageSize;
     if(this.endIndex > this.totalDataLength) {
       this.endIndex = this.totalDataLength;
     }
-    console.log(`Загрузка данных для элементов с ${this.startIndex} по ${this.endIndex}`);
-    this.updateData(this.startIndex, this.endIndex);
+    console.log(`Загрузка данных для элементов с ${this.startIndex} по ${this.endIndex}`);*/
+    this.pageNum = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.totalDataLength = event.length;
+    debugger;
+    this.updateData(this.pageNum, this.pageSize);
   }
 
-  onColumnHeaderClick(columnName: string): void {
+  onColumnClick(columnName: string): void {  //сделать доп поле для счета, сколько раз нажали по колонке, его тоже передавать на бек
+    if(this.lastClickedColumn == columnName && this.countColumn < 3) {
+      this.countColumn ++;
+    } else {
+      if(this.countColumn == 3) {
+        this.countColumn = 0;
+      } else {
+        this.countColumn = 1;
+      }
+    }
     this.lastClickedColumn = columnName;
     console.log("выбрана колонка " + this.lastClickedColumn);
-    this.updateData(this.startIndex, this.endIndex);
+    debugger;
+    this.updateData(this.pageNum, this.pageSize);
   }
 
-  updateData(start: Number, end: Number) {
-    this.baseService.getStudentsPag(start, end, "", this.filterValue).subscribe( data => {
+  updateData(page: Number, size: Number) {
+    this.baseService.getFullLength().subscribe((length: number) =>{
+      this.totalDataLength = length;
+    debugger;})
+
+    this.baseService.getStudentsPag(page, size, this.lastClickedColumn, this.filterValue).subscribe( data => {
       this.dataSource.data = data;
-      this.totalDataLength = this.baseService.totalLength;
+      this.dataSource.sort = this.sort;
       debugger;
     });
   }
 
-  sortData( sortState: Sort ){
+  upDataWithout(nonColumn : String ) {  //for add, update, delete, filter
+    this.baseService.getFullLength().subscribe((length: number) =>{
+      this.totalDataLength = length;
+    debugger;})
+
+    this.baseService.getStudentsPag(this.pageNum, this.pageSize, nonColumn, this.filterValue).subscribe( data => {
+      this.dataSource.data = data;
+      debugger;
+    });
+  }
+
+  sortData( sortState: Sort ){   // сделать всю сортировку через это ивент
+    debugger;
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
@@ -85,12 +121,14 @@ export class MaterialTableComponent implements OnInit{
   filterData( event: Event ) {
     this.filterValue = (event.target as HTMLInputElement).value;
 
-    this.baseService.getStudentsPag(this.startIndex, this.pageSize, "", this.filterValue).subscribe( data => {
+    this.upDataWithout("");
+
+    /*this.baseService.getStudentsPag(this.pageNum, this.pageSize, "", this.filterValue).subscribe( data => {
       this.dataSource.data = data;
       debugger;
-      this.baseService.getLength();
+      //this.baseService.getLength();
       debugger;
-    });
+    });*/
   }
 
 
@@ -103,22 +141,31 @@ export class MaterialTableComponent implements OnInit{
       if(result != null) {
         console.log ("adding new student: " + result.fio);
         this.baseService.addNewStudent(result).subscribe( () => {
-          this.updateData(this.startIndex, this.endIndex);
+          this.upDataWithout("");
+          /*this.baseService.getStudentsPag(this.pageNum, this.pageSize, "", this.filterValue).subscribe( data => {
+            this.dataSource.data = data;
+            debugger;
+          });*/
         });
       }
     });
   }
 
   updateStudent(student : Student): void {
-    const dialogPutStudent = this.dialog.open(PutDialogEditWrapperComponent, {
-      width: '400px',
-      data: student
+    const dialogPutStudent = this.dialog.open(PutDialogEditWrapperComponent, {      //нужно чтоб не сортировало, а оставило так как есть,
+      width: '400px',                                                               // т.е. по старой сортировке, но не меняя ничего
+      data: student                                                                 // для этого отправляю в colomn "nothing"
     });
     dialogPutStudent.afterClosed().subscribe((result : Student) => {
       if(result != null) {
         console.log ("puting student: " + student.fio);
         this.baseService.updateStudent(result, student.id).subscribe( () =>{
-          this.updateData(this.startIndex, this.endIndex);
+          this.upDataWithout("nothing");
+          /*this.baseService.getStudentsPag(this.pageNum, this.pageSize, "nothing", this.filterValue).subscribe( data => {
+            this.dataSource.data = data;
+            //this.totalDataLength = this.baseService.totalLength;
+            debugger;
+          });*/
        });
       }
     });
@@ -128,7 +175,12 @@ export class MaterialTableComponent implements OnInit{
     console.log("delete student");
     const id = Number(student.id);
     this.baseService.deleteStudent(id).subscribe( () =>{
-      this.updateData(this.startIndex, this.endIndex);
+      this.upDataWithout("");
+      /*this.baseService.getStudentsPag(this.pageNum, this.pageSize, "", this.filterValue).subscribe( data => {
+        this.dataSource.data = data;
+        //this.totalDataLength = this.baseService.totalLength;
+        debugger;
+      });*/
    });
   }
 
