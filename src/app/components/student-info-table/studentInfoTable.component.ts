@@ -35,7 +35,7 @@ export class StudentInfoTableComponent implements OnInit {
     this.updateData();
   }
   updateData() {
-    this.baseService.getStudentsPag(1, 1, "id").subscribe( data => {
+    this.baseService.getStudentsPag(1, 1, "id", "","").subscribe( data => {
       this.dataSource.data = data;
     });}
   updateStudent(student : Student): void {

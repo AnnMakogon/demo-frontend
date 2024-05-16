@@ -20,10 +20,12 @@ export class BaseServiceService {
   public column: String | undefined;
   public filter: String | undefined;
 
+  direction: String = "";
+
   constructor( private http: HttpClient ) { }
 
-  getStudentsPag(page: Number, size: Number, column?: String, filter?: String): Observable<Student[]> {
-    this.column = column;
+  getStudentsPag(page: Number, size: Number, column: String, direction: String, filter: String): Observable<Student[]> {
+    /*this.column = column;
     this.filter = filter;
 
     let params = new HttpParams();
@@ -39,11 +41,25 @@ export class BaseServiceService {
       params = params.append('sort', "");
     }
 
+    if (direction != undefined){
+      params = params.append('direction', direction.toString());
+    }else{
+      params = params.append('direction', "");
+    }
+
     if (this.filter != undefined){
       params = params.append('filter', this.filter.toString());
     }else{
       params = params.append('filter', "");
-    }
+    }*/
+    let params = new HttpParams();
+
+    params = params.append('page', page.toString());
+    params = params.append('size', size.toString());
+    params = params.append('sort', column.toString());
+    params = params.append('direction', direction.toString());
+    params = params.append('filter', filter.toString());
+
     return this.http.get<Student[]>(this.studentsUrl, {params});
   }
 
