@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Student } from 'src/app/models/student';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-dialog-edit-wrapper',

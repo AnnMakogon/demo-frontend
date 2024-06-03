@@ -15,10 +15,11 @@ import { PutDialogEditWrapperComponent } from './components/student-editor/put-d
 import { MaterialTableComponent } from './components/material-table/material-table.component';
 import { MatButtonModule } from '@angular/material/button';
 
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Sort, MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { LoginAuthComponent } from './components/autentification/login-auth/login-auth.component';
+import { DtoPipe } from './dto.pipe';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { LoginAuthComponent } from './components/autentification/login-auth/logi
     DialogEditWrapperComponent,
     PutDialogEditWrapperComponent,
     MaterialTableComponent,
-    LoginAuthComponent
+    LoginAuthComponent,
+    DtoPipe
   ],
   imports: [
     BrowserModule,

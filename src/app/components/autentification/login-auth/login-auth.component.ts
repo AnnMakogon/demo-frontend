@@ -37,7 +37,7 @@ export class LoginAuthComponent{
     console.log("full User: " + this.editingUser.role)
     this.authService.loginUser(this.editingUser)
     .subscribe(
-      (response: HttpResponse<Array<Object>[]>) => {
+      /*(response: HttpResponse<Array<Object>[]>) => {
         this.roleResponse = response.body;
         let roleJSONString;
         let roleJSON;
@@ -52,7 +52,7 @@ export class LoginAuthComponent{
         console.log('Role: ' + this.role);
         console.log("this.editingUser: " +  this.editingUser.role)
         //debugger;
-      }
+      }*/
     );
   }
 

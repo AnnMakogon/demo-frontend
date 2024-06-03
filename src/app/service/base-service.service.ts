@@ -25,54 +25,18 @@ export class BaseServiceService {
   constructor( private http: HttpClient ) { }
 
   getStudentsPag(page: Number, size: Number, column: String, direction: String, filter: String): Observable<Student[]> {
-    /*this.column = column;
-    this.filter = filter;
-
-    let params = new HttpParams();
-    params = params.append('page', page.toString());
-    params = params.append('size', size.toString());
-
-    //this.getFullLength();
-
-    debugger
-    if (this.column != undefined){
-      params = params.append('sort', this.column.toString());
-    }else{
-      params = params.append('sort', "");
-    }
-
-    if (direction != undefined){
-      params = params.append('direction', direction.toString());
-    }else{
-      params = params.append('direction', "");
-    }
-
-    if (this.filter != undefined){
-      params = params.append('filter', this.filter.toString());
-    }else{
-      params = params.append('filter', "");
-    }*/
-    let params = new HttpParams();
-
-    params = params.append('page', page.toString());
-    params = params.append('size', size.toString());
-    params = params.append('sort', column.toString());
-    params = params.append('direction', direction.toString());
-    params = params.append('filter', filter.toString());
+    let params = new HttpParams()
+              .append('page', page.toString())
+              .append('size', size.toString())
+              .append('column', column.toString())
+              .append('direction', direction.toString())
+              .append('filter', filter.toString());
 
     return this.http.get<Student[]>(this.studentsUrl, {params});
   }
 
   getFullLength(): Observable<number>{
-    return this.http.get<number>('api/base/fulllength')/*.subscribe((length: number) =>{
-      this.totalLength = length;
-      debugger;})*/
-  }
-
-  getLength(): void {
-    this.http.get<number>('api/base/length').subscribe((length: number) =>{
-      this.totalLength = length;
-      debugger;})
+    return this.http.get<number>('api/base/length');
   }
 
   addNewStudent(student: Student): Observable<Student> {
@@ -88,7 +52,7 @@ export class BaseServiceService {
 
   deleteStudent(id : Number): Observable<Student> {
     console.log ("Delete Student");
-    const url = `${this.studentsUrl}` /*+ '/'*/ + `${id}`;
+    const url = `${this.studentsUrl}` + `${id}`;
     debugger
     return this.http.delete<Student>(url).pipe(
       tap(request => console.log('Отправленный запрос:', request))
