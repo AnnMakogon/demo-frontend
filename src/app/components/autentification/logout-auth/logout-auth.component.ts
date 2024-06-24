@@ -1,7 +1,7 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { AuthServiceService } from '../auth-service.service';
-import { User } from 'src/app/models/user';
-import { LoginAuthComponent } from '../login-auth/login-auth.component';
+import { UserLoginDTO } from 'src/app/dto/UserLoginDTO';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn:'root'
@@ -15,21 +15,20 @@ import { LoginAuthComponent } from '../login-auth/login-auth.component';
 })
 export class LogoutAuthComponent implements OnInit {
 
-  editingUser: User;
+  editingUser: UserLoginDTO;
 
   constructor(private authService : AuthServiceService,
-              private loginAuth : LoginAuthComponent
+              private route : Router
   ) {
-    this.editingUser = loginAuth.getEditUser();
+    this.editingUser = new UserLoginDTO();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   logout():void{
-    this.authService.logoutUser(this.editingUser);
-    this.editingUser = new User;
+    this.authService.logoutUser().subscribe(() =>
+      this.route.navigate(['/login']));
+    this.editingUser = new UserLoginDTO();
   }
-
 
 }

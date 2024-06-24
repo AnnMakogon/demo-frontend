@@ -1,28 +1,21 @@
-import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/models/user';
 import { Base64 } from './Base64';
+import { StudentRegistrDTO } from 'src/app/dto/StudentRegistrDTO';
+import { UserLoginDTO } from 'src/app/dto/UserLoginDTO';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthServiceService {
 
-  constructor(private http: HttpClient) {}
+  constructor( private http: HttpClient ) {}
 
-  private role: String | null = '';
-
-  public RoleArray: String[] = new Array("STUDENT", "ADMIN");
-
-  public getRole(): String | null{
-    return this.role;
-  }
-
-  loginUser(user: User): Observable<HttpResponse<Array<Object>[]>> {
+  loginUser(user: UserLoginDTO): Observable<HttpResponse<Array<Object>[]>> {
     const userUrl = '/api/login';
-    console.log ('auth this student');
-    const np: string = user.username + ":" + user.password;
+    const np: string = user.fio + ":" + user.password_id;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Basic ' + Base64.encode(np)
@@ -30,27 +23,32 @@ export class AuthServiceService {
 
     const postData = {
       grant_type: 'password',
-      username: user.username,
-      password: user.password
+      username: user.fio,
+      password: user.password_id
     };
 
-    return this.http.post<Array<Object>[]>(userUrl, JSON.stringify(postData),{headers, observe: 'response', responseType: 'json'}).pipe();
+    console.log ('auth this student');
+    return this.http.post<Array<Object>[]>(userUrl, JSON.stringify(postData), {headers, observe: 'response'}).pipe();
   }
 
-  logoutUser(user: User): Observable<User> {
+  logoutUser(): Observable<HttpResponse<Array<Object>[]>> {
     const userUrl = '/api/logout';
-    console.log('logout this user');
     const headers = new HttpHeaders({
      'Content-Type': 'application/json',
-   });
+    });
 
-    const postData = {
-      grant_type: 'password',
-      username: user.username,
-      password: user.password
-    };
+    console.log('logout this user');
+    return this.http.post<HttpResponse<Array<Object>[]>>(userUrl, {headers});
+  }
 
-    return this.http.post<User>(userUrl, JSON.stringify(postData), {headers} ).pipe();
+  registration(student: StudentRegistrDTO) {
+    const userUrl = '/api/base/registration/'
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    console.log('registration');
+    return this.http.post<StudentRegistrDTO>(userUrl, student, {headers}).subscribe();
   }
 
 }

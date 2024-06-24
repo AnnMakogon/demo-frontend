@@ -2,14 +2,15 @@ import { BaseServiceService } from 'src/app/service/base-service.service';
 import { Component, OnInit } from '@angular/core';
 import { Student } from 'src/app/models/student';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogEditWrapperComponent } from '../student-editor/dialog-edit-wrapper/dialog-edit-wrapper.component';
-import { PutDialogEditWrapperComponent } from '../student-editor/put-dialog-edit-wrapper/put-dialog-edit-wrapper.component';
-
+import { PutDialogEditWrapperComponent } from '../put-dialog-edit-wrapper/put-dialog-edit-wrapper.component';
 import { PageEvent } from '@angular/material/paginator';
+
 import { MatTableDataSource } from '@angular/material/table';
 import { Sort } from '@angular/material/sort';
 import { LogoutAuthComponent } from '../autentification/logout-auth/logout-auth.component';
-import { LoginAuthComponent } from '../autentification/login-auth/login-auth.component';
+import { StudentUpdateDTO } from 'src/app/dto/StudentUpdateDTO';
+import { StudentFullTableDTO } from 'src/app/dto/StudentFullTableDTO';
+import { UserDTO } from 'src/app/dto/UserDTO';
 
 @Component({
   selector: 'app-material-table',
@@ -35,19 +36,23 @@ export class MaterialTableComponent implements OnInit{
 
   displayedColumns: string[] = ['demo-id', 'demo-name', 'demo-surname', 'demo-phoneNumber', 'demo-action'];
 
-  dataSource = new MatTableDataSource<Student>;
+  persUser: UserDTO;
 
+  dataSource = new MatTableDataSource<StudentFullTableDTO>;
   constructor(
     private baseService : BaseServiceService,
     public dialog: MatDialog,
     private logoutAut : LogoutAuthComponent,
-    private loginAuth : LoginAuthComponent,
   ) {
     this.dataSource = new MatTableDataSource();
+    this.persUser = new UserDTO();
   }
 
   ngOnInit(): void{
     console.log ("Material Table Component");
+    this.baseService.getPersUser().subscribe(( persUser: UserDTO) => {
+      this.persUser = persUser;
+    });
     this.updateData();
   }
 
@@ -55,23 +60,26 @@ export class MaterialTableComponent implements OnInit{
     this.pageNum = event.pageIndex;
     this.pageSize = event.pageSize;
     this.totalDataLength = event.length;
-    debugger;
     this.updateData();
   }
 
   updateData() {
-    this.baseService.getFullLength().subscribe((length: number) =>{
+    this.baseService.getFullLength().subscribe((length: number) => {
       this.totalDataLength = length;
-    debugger;})
+    })
 
     this.baseService.getStudentsPag(this.pageNum, this.pageSize, this.column, this.direction, this.filterValue).subscribe( data => {
       this.dataSource.data = data;
-      debugger;
+      this.dataSource.data.forEach((student: StudentFullTableDTO) =>{
+        if(student.fio == this.persUser.username){
+          this.persUser.id = student.id;
+        }
+      })
     });
+
   }
 
   sortData( sortState: Sort ){
-    debugger;
     if (sortState.direction) {
       this.direction = sortState.direction;
       this.column = sortState.active;
@@ -87,28 +95,12 @@ export class MaterialTableComponent implements OnInit{
     this.updateData();
   }
 
-
-  addNewStudent(): void {
-    const dialogAddingNewStudent = this.dialog.open(DialogEditWrapperComponent, {
-      width: '400px',
-      data: null
-    });
-    dialogAddingNewStudent.afterClosed().subscribe((result : Student) => {
-      if(result != null) {
-        console.log ("adding new student: " + result.fio);
-        this.baseService.addNewStudent(result).subscribe( () => {
-          this.updateData();
-        });
-      }
-    });
-  }
-
-  updateStudent(student : Student): void {
+  updateStudent(student : StudentUpdateDTO): void {
     const dialogPutStudent = this.dialog.open(PutDialogEditWrapperComponent, {
       width: '400px',
       data: student
     });
-    dialogPutStudent.afterClosed().subscribe((result : Student) => {
+    dialogPutStudent.afterClosed().subscribe((result : StudentUpdateDTO) => {
       if(result != null) {
         console.log ("puting student: " + student.fio);
         this.baseService.updateStudent(result, student.id).subscribe( () =>{
