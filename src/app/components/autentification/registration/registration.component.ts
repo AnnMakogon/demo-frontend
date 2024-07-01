@@ -28,6 +28,7 @@ export class RegistrationComponent implements OnInit {
   registration(): void {
     console.log("Registration User: " + this.studentAuth.fio + this.studentAuth.password_id);
     this.authService.registration(this.studentAuth);
+    alert("Проверьте почту :)");
   }
 
 }

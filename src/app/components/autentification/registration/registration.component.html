@@ -8,6 +8,9 @@
 
     <input type="text" placeholder="Enter PhoneNumber" [(ngModel)]="studentAuth.phoneNumber" required>
 
+    На него будет отправлено письмо с подтверждением
+    <input type="text" placeholder="Enter Email" [(ngModel)]="studentAuth.email" required>
+
     <button class="right-align" mat-raised-button color="primary"
     (click)="registration()"  routerLink="/login">Registration</button>
 

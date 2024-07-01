@@ -1,4 +1,4 @@
-export class StudentTableDTO {
+export class StudentTableDTO {    //то, что передается в таблицу без телефона
   constructor(){
     this.id = null;
     this.fio = "";

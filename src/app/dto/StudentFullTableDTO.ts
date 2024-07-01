@@ -1,4 +1,4 @@
-export class StudentFullTableDTO {
+export class StudentFullTableDTO {    //то, что передается в таблицу с телефоном
   constructor() {
     this.id = null;
     this.fio = "";

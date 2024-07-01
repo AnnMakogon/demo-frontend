@@ -11,13 +11,11 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'}),
 };
 
-const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
 @Injectable({
   providedIn: 'root'
 })
 
-export class BaseServiceService {
+export class StudentServiceService {
 
   private studentsUrl = 'api/base/students/';
 
@@ -45,18 +43,15 @@ export class BaseServiceService {
     return this.http.get<UserDTO>('api/persUser');
   }
 
-  getFullLength(): Observable<number>{
-    return this.http.get<number>('api/base/length');
+  getFullLength(filter: String): Observable<number>{
+    let params = new HttpParams()
+              .append('filter', filter.toString());
+    return this.http.get<number>('api/base/length', {params});
   }
 
   registration(student: StudentRegistrDTO): Observable<StudentRegistrDTO> {
     console.log('registration');
-    return this.http.post<StudentRegistrDTO>("api/base/registration/", student, {headers: headers}).pipe(); // не работеть запрос
-  }
-
-  addStudentTest(student: Student): Observable<Student> {
-    console.log('addNewStudent');
-    return this.http.post<Student>(this.studentsUrl, student).pipe();
+    return this.http.post<StudentRegistrDTO>("api/base/registration/", student, httpOptions).pipe(); // не работеть запрос
   }
 
   updateStudent(student: StudentUpdateDTO, id: any): Observable<null | StudentUpdateDTO> {
@@ -65,16 +60,11 @@ export class BaseServiceService {
     return this.http.put<StudentUpdateDTO>(this.studentsUrl, {id: id, fio: student.fio, group: student.group, phoneNumber: student.phoneNumber}, httpOptions).pipe();
   }
 
-  deleteStudent(id : Number): Observable<Student> {
+  deleteStudent(id : Number): Observable<StudentFullTableDTO> {
     console.log ("Delete Student");
     const url = `${this.studentsUrl}` + `${id}`;
     debugger
-    return this.http.delete<Student>(url).pipe();
-  }
-
-  getOneStudent(student: Student): Observable<Student> {
-    console.log ('put this student');
-    return this.http.put<Student>(this.studentsUrl, student ).pipe();
+    return this.http.delete<StudentFullTableDTO>(url).pipe();
   }
 
 }

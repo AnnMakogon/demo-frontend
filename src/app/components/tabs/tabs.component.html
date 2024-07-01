@@ -1,0 +1,10 @@
+<mat-tab-group >
+  <mat-tab label="Students">
+    <app-material-table ></app-material-table>
+  </mat-tab>
+  <ng-container *ngIf="persUser.role == '[ADMIN]'">
+    <mat-tab label="Email">
+      <app-emailTable ></app-emailTable>
+    </mat-tab>
+  </ng-container>
+</mat-tab-group>

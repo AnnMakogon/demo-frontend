@@ -1,4 +1,4 @@
-export class UserDTO {
+export class UserDTO {           // для передачи с бека персонального юзера (информация про вошедшего)
   constructor() {
     this.id = null;
     this.username = "";

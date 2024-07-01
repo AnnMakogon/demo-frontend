@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Put(Apdate) Email</h1>
+<div mat-dialog-content style="display: online; padding: 0px; margin:auto">
+
+  <!--<mat-form-field class="full-width-input">
+    <input matInput type="text" placeholder="New Date of Email"
+    [(ngModel)]="editingEmail.date" required>  сюда прикрутить красивый выбор даты
+  </mat-form-field>-->
+
+  <mat-form-field>
+    <input  matInput [matDatepicker] ="picker" placeholder = "Выберите дату" (dateChange)="getDate($event)">
+      <mat-datepicker-toggle  matSuffix [for] ="picker"></mat-datepicker-toggle >
+    <mat-datepicker #picker ></mat-datepicker >
+  </mat-form-field >
+
+  <mat-form-field classs="full-width-input">
+    <input matInput type="text" placeholder="New Address of Email"
+    [(ngModel)]="editingNl.address" required>
+  </mat-form-field>
+  <mat-form-field classs="full-width-input">
+    <input matInput type="text" placeholder="New Text of Email"
+    [(ngModel)]="editingNl.text" required>
+  </mat-form-field>
+  <mat-form-field classs="full-width-input">
+    <input matInput type="text" placeholder="New Subuject of Email"
+    [(ngModel)]="editingNl.subject" required>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button class="right-align" mat-raised-button color="primary"
+    [mat-dialog-close]="editingNl">Update</button>
+</div>

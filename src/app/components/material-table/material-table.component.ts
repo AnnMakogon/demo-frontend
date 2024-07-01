@@ -1,8 +1,7 @@
-import { BaseServiceService } from 'src/app/service/base-service.service';
 import { Component, OnInit } from '@angular/core';
 import { Student } from 'src/app/models/student';
 import { MatDialog } from '@angular/material/dialog';
-import { PutDialogEditWrapperComponent } from '../put-dialog-edit-wrapper/put-dialog-edit-wrapper.component';
+import { PutDialogEditWrapperComponent } from '../dialog-wrappers/put-dialog-student/put-dialog-edit-wrapper.component';
 import { PageEvent } from '@angular/material/paginator';
 
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,6 +10,9 @@ import { LogoutAuthComponent } from '../autentification/logout-auth/logout-auth.
 import { StudentUpdateDTO } from 'src/app/dto/StudentUpdateDTO';
 import { StudentFullTableDTO } from 'src/app/dto/StudentFullTableDTO';
 import { UserDTO } from 'src/app/dto/UserDTO';
+import { DelDialogEditWrapperComponent } from '../dialog-wrappers/del-dialog-student/del-dialog-edit-wrapper.component';
+import { StudentServiceService } from 'src/app/service/student-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-material-table',
@@ -40,9 +42,10 @@ export class MaterialTableComponent implements OnInit{
 
   dataSource = new MatTableDataSource<StudentFullTableDTO>;
   constructor(
-    private baseService : BaseServiceService,
+    private baseService: StudentServiceService,
     public dialog: MatDialog,
-    private logoutAut : LogoutAuthComponent,
+    private logoutAut: LogoutAuthComponent,
+
   ) {
     this.dataSource = new MatTableDataSource();
     this.persUser = new UserDTO();
@@ -64,7 +67,7 @@ export class MaterialTableComponent implements OnInit{
   }
 
   updateData() {
-    this.baseService.getFullLength().subscribe((length: number) => {
+    this.baseService.getFullLength(this.filterValue).subscribe((length: number) => {
       this.totalDataLength = length;
     })
 
@@ -103,23 +106,34 @@ export class MaterialTableComponent implements OnInit{
     dialogPutStudent.afterClosed().subscribe((result : StudentUpdateDTO) => {
       if(result != null) {
         console.log ("puting student: " + student.fio);
-        this.baseService.updateStudent(result, student.id).subscribe( () =>{
+        this.baseService.updateStudent(result, student.id).subscribe( () => {
           this.updateData();
        });
       }
     });
   }
 
-  deleteStudent(student: Student): void {
-    console.log("delete student");
-    const id = Number(student.id);
-    this.baseService.deleteStudent(id).subscribe( () =>{
-      this.updateData();
-   });
+  deleteStudent(student: StudentFullTableDTO): void {
+    const dialogDelStudent = this.dialog.open(DelDialogEditWrapperComponent, {
+      width: '400px',
+      data: student
+    });
+    dialogDelStudent.afterClosed().subscribe((result : Boolean) => {
+      if(result){
+        console.log("delete student");
+        const id = Number(student.id);
+        this.baseService.deleteStudent(id).subscribe(() => {
+        this.updateData();
+        });
+      }
+    })
+
   }
 
   logout(): void {
     this.logoutAut.logout();
   }
+
+
 
 }

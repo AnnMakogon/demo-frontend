@@ -1,0 +1,69 @@
+<!--<html lang="ru">
+<body>
+
+<div class="header">
+  Здесь будет имя, фамилия вошедшего например через <h2>{{title}}</h2>
+</div>
+
+</body>-->
+<h1>{{title}}</h1>
+<div class="container">
+  <input type="text" placeholder="Enter Text Of Your Email" [(ngModel)]="newsletter.text" required>
+
+  <input type="text" placeholder="Enter Subject" [(ngModel)]="newsletter.subject" required>
+
+
+
+  <mat-form-field>
+    <mat-select placeholder="Minutes" [(ngModel)]="minute">
+      <mat-option *ngFor="let m of minutes" [value]="m">
+        {{m}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Hourse" [(ngModel)]="hour">
+      <mat-option *ngFor="let h of hours" [value]="h">
+        {{h}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!--<mat-form-field>
+    <mat-select placeholder="Days" [(ngModel)]="day">
+      <mat-option *ngFor="let d of daysOfMonth" [value]="d">
+        {{d}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Months" [(ngModel)]="month">
+      <mat-option *ngFor="let mon of months" [value]="mon">
+        {{mon}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Year" [(ngModel)]="year">
+      <mat-option *ngFor="let y of years" [value]="y">
+        {{y}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>-->
+
+  <mat-form-field>
+    <input  matInput [matDatepicker] ="picker" placeholder = "Выберите дату" (dateChange)="getDate($event)">
+      <mat-datepicker-toggle  matSuffix [for] ="picker"></mat-datepicker-toggle >
+    <mat-datepicker #picker ></mat-datepicker >
+  </mat-form-field >
+
+  <button class="right-align" mat-raised-button color="primary"
+  (click)="messNewsletter()">Mess</button>
+
+  Don't have a User?
+  <button class="right-align" mat-raised-button collor="primary"
+  (click)="cancel()">Cancel</button>
+</div>

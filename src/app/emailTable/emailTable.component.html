@@ -1,0 +1,76 @@
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="filterData($event)" placeholder="Filter" #input>
+</mat-form-field>
+
+<mat-checkbox [(ngModel)]="showflag" (change)="updateData()">-Показать непрочитанные</mat-checkbox>
+
+<mat-checkbox (change)="setshowStatus($event)">-Показать статус писем</mat-checkbox>
+<br>
+<button mat-raised-button collor="primary"(click)="newNewsletter()">Create newsletter</button>
+
+<div class="mat-elevation-z8"  *ngIf="dataSource">
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+
+    <ng-container matColumnDef="demo-id">
+      <th mat-header-cell mat-sort-header="id" *matHeaderCellDef> ID </th>
+      <td width="5%" mat-cell *matCellDef="let newsletter"> {{newsletter.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-subject">
+      <th mat-header-cell mat-sort-header="subject" *matHeaderCellDef> Subject </th>
+      <td width="15%" mat-cell *matCellDef="let newsletter"> {{newsletter.subject}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-text">
+      <th mat-header-cell mat-sort-header="text" *matHeaderCellDef> Text </th>
+      <td width="25%" mat-cell *matCellDef="let newsletter"> {{newsletter.text}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-address">
+      <th mat-header-cell mat-sort-header="address" *matHeaderCellDef> Address </th>
+      <td width="15%" mat-cell *matCellDef="let newsletter"> {{newsletter.address}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-date">
+      <th mat-header-cell mat-sort-header="date" *matHeaderCellDef> Date </th>
+      <td width="10%" mat-cell *matCellDef="let newsletter"> {{newsletter.date}}
+        <!--Button на передатирование-->
+        <button mat-stroked-button (click)="changeDateNl(newsletter)">Передатировать</button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-mess">
+      <th mat-header-cell mat-sort-header="mess" *matHeaderCellDef> Mess </th>
+      <td width="10%" mat-cell *matCellDef="let newsletter"> {{newsletter.mess}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-status" >
+      <th mat-header-cell mat-sort-header="status" *matHeaderCellDef [hidden]="!showStatus"> Status </th>
+      <td width="5%" mat-cell *matCellDef="let newsletter" [hidden]="!showStatus"> {{newsletter.status}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-action">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td width="20%" mat-cell *matCellDef="let mail">
+          <button mat-stroked-button (click)="updateEmail(mail)">Update</button>
+          <button mat-stroked-button (click)="deleteEmail(mail)"> X </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <mat-paginator
+              [length]="totalDataLength"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="onPageChange($event)"
+               showFirstLastButtons
+               aria-label="Select page of Students">
+  </mat-paginator>
+
+</div>
+

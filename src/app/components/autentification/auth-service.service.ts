@@ -13,22 +13,16 @@ export class AuthServiceService {
 
   constructor( private http: HttpClient ) {}
 
-  loginUser(user: UserLoginDTO): Observable<HttpResponse<Array<Object>[]>> {
+  loginUser(user: UserLoginDTO): Observable<Array<Object>[]> {
     const userUrl = '/api/login';
     const np: string = user.fio + ":" + user.password_id;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + Base64.encode(np)
+      'Authorization': 'Basic '+ Base64.encode(np)
     });
 
-    const postData = {
-      grant_type: 'password',
-      username: user.fio,
-      password: user.password_id
-    };
-
     console.log ('auth this student');
-    return this.http.post<Array<Object>[]>(userUrl, JSON.stringify(postData), {headers, observe: 'response'}).pipe();
+    return this.http.post<Array<Object>[]>(userUrl, null, {headers}).pipe();
   }
 
   logoutUser(): Observable<HttpResponse<Array<Object>[]>> {

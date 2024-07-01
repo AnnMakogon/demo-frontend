@@ -1,4 +1,4 @@
-export class StudentUpdateDTO {
+export class StudentUpdateDTO {    // для обновления данных студента
   constructor() {
     this.id = null;
     this.fio = "";

@@ -20,9 +20,9 @@ export class LoginAuthComponent{
 
   thisUser: UserLoginDTO;
 
-  constructor(private authService : AuthServiceService,
-              private route: Router,
-              public dialog: MatDialog
+  constructor( private authService : AuthServiceService,
+               private route: Router,
+               public dialog: MatDialog
   ){
     this.thisUser = new StudentRegistrDTO();
   }
@@ -30,9 +30,8 @@ export class LoginAuthComponent{
   login():void{
     console.log("full User: " + this.thisUser.fio);
     this.authService.loginUser(this.thisUser).subscribe(() =>
-      this.route.navigate(['/students'])
+      this.route.navigate(['/tabs'])
     );
-
   }
 
   registration(): void{

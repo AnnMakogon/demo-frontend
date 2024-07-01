@@ -1,4 +1,4 @@
-export class StudentRegistrDTO {
+export class StudentRegistrDTO {    //то, что вводит при регестрации
   constructor() {
     this.id = null;
     this.fio = "";
@@ -7,6 +7,7 @@ export class StudentRegistrDTO {
     this.role = "";
     this.password_id = "";
     this.enable = true;
+    this.email = "";
   }
 
   id: number | null;
@@ -16,4 +17,5 @@ export class StudentRegistrDTO {
   role: string;
   password_id: string;
   enable: boolean;
+  email: string;
 }

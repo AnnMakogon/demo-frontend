@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Put(Apdate) Email</h1>
+<div mat-dialog-content style="display: online; padding: 0px; margin:auto">
+
+  <mat-form-field>
+    <mat-select placeholder="Minutes" [(ngModel)]="editingNlData.minute">
+      <mat-option *ngFor="let m of minutes" [value]="m">
+        {{m}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Hourse" [(ngModel)]="editingNlData.hour">
+      <mat-option *ngFor="let h of hours" [value]="h">
+        {{h}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input  matInput [matDatepicker] ="picker" placeholder = "Выберите дату" (dateChange)="getDate($event)">
+      <mat-datepicker-toggle  matSuffix [for] ="picker"></mat-datepicker-toggle >
+    <mat-datepicker #picker ></mat-datepicker >
+  </mat-form-field>
+
+</div>
+
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button class="right-align" mat-raised-button color="primary"
+    [mat-dialog-close]="editingNlData">Update</button>
+</div>

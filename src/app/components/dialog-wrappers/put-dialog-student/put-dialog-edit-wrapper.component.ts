@@ -8,6 +8,7 @@ import { StudentUpdateDTO } from 'src/app/dto/StudentUpdateDTO';
   styleUrls: ['./put-dialog-edit-wrapper.component.scss']
 })
 export class PutDialogEditWrapperComponent implements OnInit {
+
   editingStudent: StudentUpdateDTO;
 
   constructor(public dialogRef: MatDialogRef<PutDialogEditWrapperComponent>,

@@ -20,6 +20,10 @@ export class Error401InterceptorService implements HttpInterceptor{
         this.route.navigate(['/login']);
         alert("Неверное Имя или Пароль");
       }
+      if ([500].includes(err.status)) {
+        //this.route.navigate(['/login']);
+        alert("Серверная Ошибка, Щас починим");
+      }
 
       const error = err.error?.message || err.statusText;
       console.log(err);
