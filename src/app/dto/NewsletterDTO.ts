@@ -2,7 +2,7 @@ export class NewsletterDTO {
   constructor(){
     this.id = null;
     this.date = "";
-    this.address = "";
+    //this.address = "";
     this.text = "";
     this.subject = "";
     this.mess = "";
@@ -10,7 +10,7 @@ export class NewsletterDTO {
   }
   id: null | number;
   date: string;
-  address: string;
+  //address: string;
   text: string;
   subject: string;
   mess: string;

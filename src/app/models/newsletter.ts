@@ -4,7 +4,7 @@ export class Newsletter {
   constructor(){
     this.id = null;
     this.date = "";
-    this.address = "";
+    //this.address = "";
     this.text = "";
     this.subject = "";
     this.mess = false;
@@ -12,7 +12,7 @@ export class Newsletter {
   }
   id: null | number;
   date: string;
-  address: string;
+  //address: string;
   text: string;
   subject: string;
   mess: boolean;

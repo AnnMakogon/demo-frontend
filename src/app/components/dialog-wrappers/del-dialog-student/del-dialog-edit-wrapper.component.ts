@@ -9,7 +9,19 @@ import { StudentFullTableDTO } from 'src/app/dto/StudentFullTableDTO';
 })
 export class DelDialogEditWrapperComponent implements OnInit {
 
+  decision: StudentFullTableDTO;
 
+  constructor(public dialogRef: MatDialogRef<DelDialogEditWrapperComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: StudentFullTableDTO){
+      this.decision = data;
+    }
+
+  noDel():void {
+    this.dialogRef.close(false);
+  }
+  yesDel(): void {
+    this.dialogRef.close(true);
+  }
 
   ngOnInit() {}
 

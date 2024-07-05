@@ -9,9 +9,12 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { PutDialogEmailComponent } from '../components/dialog-wrappers/put-dialog-email/put-dialog-email.component';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { DelDialogEmailComponent } from '../components/dialog-wrappers/del-dialog-email/del-dialog-email.component';
 import { PutDataDialogEmailComponent } from '../components/dialog-wrappers/putData-dialog-email/putData-dialog-email.component';
 import { DateForChangeDto } from '../dto/DateForChangeDTO';
+import * as SockJS from 'sockjs-client';
+import * as Stomp from 'stompjs';
+import { DelDialogEditWrapperComponent } from '../components/dialog-wrappers/del-dialog-student/del-dialog-edit-wrapper.component';
+
 
 @Component({
   selector: 'app-emailTable',
@@ -37,7 +40,9 @@ export class EmailTableComponent implements OnInit {
 
   countColumn: number = 0;
 
-  displayedColumns: string[] = ['demo-id', 'demo-subject', 'demo-text' , 'demo-address', 'demo-date', 'demo-mess', 'demo-status', 'demo-action' ];
+  displayedColumns: string[] = ['demo-id', 'demo-subject', 'demo-text', 'demo-date', 'demo-mess', 'demo-status', 'demo-action' ];
+
+  private stompClient: any;
 
   dataSource = new MatTableDataSource<NewsletterDTO>;
   constructor(private route: Router,
@@ -49,13 +54,15 @@ export class EmailTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log ("Material Table Component");
+    console.log ("Email Table Component");
     //this.emailService.getNlPagSortFilter.subscribe(() => {});
     this.updateData();
+    //this.initializeWebSocketConnection();
   }
 
   setshowStatus(evant: any):void{
     this.showStatus = evant.checked;
+    this.updateData();
   }
 
    updateData(){
@@ -122,7 +129,7 @@ export class EmailTableComponent implements OnInit {
   }
 
   deleteEmail(newsletter: Newsletter){
-    const dialogDelEmail = this.dialog.open(DelDialogEmailComponent, {
+    const dialogDelEmail = this.dialog.open(DelDialogEditWrapperComponent, {
       width: '400px',
       data: newsletter
     });
@@ -142,6 +149,17 @@ export class EmailTableComponent implements OnInit {
     this.pageSize = event.pageSize;
     this.totalDataLength = event.length;
     this.updateData();
+  }
+
+  initializeWebSocketConnection(){
+    const serverUrl = 'ws://localhost:8080/websocket';
+    const ws = new SockJS(serverUrl);
+    this.stompClient = Stomp.over(ws);
+    this.stompClient.connect({}, () => {
+      this.stompClient.subscribe('/topic/newsletterSend', () => {
+        this.updateData();
+      })
+    })
   }
 
 }

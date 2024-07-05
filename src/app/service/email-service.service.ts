@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DateForChangeDto } from '../dto/DateForChangeDTO';
+import { WebsocketServiceService } from './websocket-service.service';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'}),
@@ -18,11 +19,15 @@ export class EmailServiceService {
 
   private messUrl = "api/mail/newsletter";
 
-  constructor( private http: HttpClient ) { }
+  constructor( private http: HttpClient,
+                private webSocketService: WebsocketServiceService
+   ) { }
 
   //создание и отправка
   messNewsletter(newsletter: NewsletterDTO): Observable<NewsletterDTO>{
     console.log("mess newsletter");
+    this.webSocketService.sendName(newsletter);
+    //this.webSocketService.onConnect();
     debugger;
     return this.http.post<NewsletterDTO>(this.messUrl, newsletter, { headers: { 'Content-Type': 'application/json' } }).pipe();
   }
@@ -30,23 +35,18 @@ export class EmailServiceService {
   changeNl(changingNl: NewsletterDTO/*, id: any*/): Observable<NewsletterDTO> {
     console.log("change this nl");
     //id = Number(id);
-    return this.http.put<NewsletterDTO>(this.messUrl, {id: changingNl.id, date: changingNl.date, address: changingNl.address, text: changingNl.text, subject: changingNl.subject, mess: changingNl.mess, status: changingNl.status }, httpOptions).pipe();
+    return this.http.put<NewsletterDTO>(this.messUrl, {id: changingNl.id, date: changingNl.date, text: changingNl.text, subject: changingNl.subject, mess: changingNl.mess, status: changingNl.status }, httpOptions).pipe();
   }
 
   changeDateNl(changingNl: NewsletterDTO, newdate: DateForChangeDto): Observable<NewsletterDTO> {
     console.log("change date of this nl");
-    /*const id = Number(changingNl.id);
-    let params = new HttpParams()
-      .append('chNl', id.toString())
-      .append('date', newdate);*/
     const messUrlData = "api/mail/newsletterDate";
     debugger
     const dateString = newdate.calendarDate + " " + newdate.minute + ":" + newdate.hour;
-    return this.http.put<NewsletterDTO>(messUrlData, {id: changingNl.id, date: dateString, address: changingNl.address, text: changingNl.text, subject: changingNl.subject, mess: changingNl.mess, status: changingNl.status }).pipe();
+    return this.http.put<NewsletterDTO>(messUrlData, {id: changingNl.id, date: dateString, text: changingNl.text, subject: changingNl.subject, mess: changingNl.mess, status: changingNl.status }).pipe();
   }
 
   deletNl(id: number): Observable<NewsletterDTO>{
-
     return this.http.delete<NewsletterDTO>(this.messUrl + "/" + id.toString()).pipe();
   }
 

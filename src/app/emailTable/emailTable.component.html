@@ -3,7 +3,7 @@
   <input matInput (keyup)="filterData($event)" placeholder="Filter" #input>
 </mat-form-field>
 
-<mat-checkbox [(ngModel)]="showflag" (change)="updateData()">-Показать непрочитанные</mat-checkbox>
+<mat-checkbox [(ngModel)]="showflag" (change)="updateData()">-Показать неотправленные</mat-checkbox>
 
 <mat-checkbox (change)="setshowStatus($event)">-Показать статус писем</mat-checkbox>
 <br>
@@ -25,11 +25,6 @@
     <ng-container matColumnDef="demo-text">
       <th mat-header-cell mat-sort-header="text" *matHeaderCellDef> Text </th>
       <td width="25%" mat-cell *matCellDef="let newsletter"> {{newsletter.text}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="demo-address">
-      <th mat-header-cell mat-sort-header="address" *matHeaderCellDef> Address </th>
-      <td width="15%" mat-cell *matCellDef="let newsletter"> {{newsletter.address}} </td>
     </ng-container>
 
     <ng-container matColumnDef="demo-date">

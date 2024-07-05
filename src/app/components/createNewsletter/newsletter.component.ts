@@ -48,6 +48,7 @@ export class CreateNewsletterComponent implements OnInit {
     this.date = this.date + " " + this.hour + ":" + this.minute;
     this.newsletter.date = this.date;
     debugger;
+    console.log(this.date);
     this.emailService.messNewsletter(this.newsletter).subscribe(() => {
       setTimeout(() => {
         //EmailTableComponent.updateData();

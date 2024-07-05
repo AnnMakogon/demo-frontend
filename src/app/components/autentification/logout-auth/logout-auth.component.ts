@@ -2,6 +2,7 @@ import { Component, Injectable, OnInit } from '@angular/core';
 import { AuthServiceService } from '../auth-service.service';
 import { UserLoginDTO } from 'src/app/dto/UserLoginDTO';
 import { Router } from '@angular/router';
+import { WebsocketServiceService } from 'src/app/service/websocket-service.service';
 
 @Injectable({
   providedIn:'root'
@@ -18,7 +19,8 @@ export class LogoutAuthComponent implements OnInit {
   editingUser: UserLoginDTO;
 
   constructor(private authService : AuthServiceService,
-              private route : Router
+              private route : Router,
+              private webSocketServece: WebsocketServiceService
   ) {
     this.editingUser = new UserLoginDTO();
   }
@@ -26,6 +28,7 @@ export class LogoutAuthComponent implements OnInit {
   ngOnInit() {}
 
   logout():void{
+    this.webSocketServece.disconnect();
     this.authService.logoutUser().subscribe(() =>
       this.route.navigate(['/login']));
     this.editingUser = new UserLoginDTO();

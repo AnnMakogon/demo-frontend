@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentRegistrDTO } from 'src/app/dto/StudentRegistrDTO';
 import { UserLoginDTO } from 'src/app/dto/UserLoginDTO';
+import { WebsocketServiceService } from 'src/app/service/websocket-service.service';
 
 @Injectable({
   providedIn:'root'
@@ -22,16 +23,20 @@ export class LoginAuthComponent{
 
   constructor( private authService : AuthServiceService,
                private route: Router,
-               public dialog: MatDialog
+               public dialog: MatDialog,
+               private webSocketService: WebsocketServiceService
   ){
     this.thisUser = new StudentRegistrDTO();
   }
 
-  login():void{
+  login():void{                                    //при логинивании устанавливается коннект с вебсокетом
     console.log("full User: " + this.thisUser.fio);
-    this.authService.loginUser(this.thisUser).subscribe(() =>
+
+    this.authService.loginUser(this.thisUser).subscribe(() =>{
       this.route.navigate(['/tabs'])
-    );
+      //this.webSocketService.onConnect();
+      this.webSocketService.connect();
+    });
   }
 
   registration(): void{
