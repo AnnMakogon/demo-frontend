@@ -35,7 +35,7 @@ export class LoginAuthComponent{
     this.authService.loginUser(this.thisUser).subscribe(() =>{
       this.route.navigate(['/tabs'])
       //this.webSocketService.onConnect();
-      this.webSocketService.connect();
+      //this.webSocketService.connect();
     });
   }
 

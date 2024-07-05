@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DateForChangeDto } from '../dto/DateForChangeDTO';
 import { WebsocketServiceService } from './websocket-service.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'}),
@@ -13,9 +14,6 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class EmailServiceService {
-  static update() {
-    throw new Error('Method not implemented.');
-  }
 
   private messUrl = "api/mail/newsletter";
 
@@ -26,7 +24,7 @@ export class EmailServiceService {
   //создание и отправка
   messNewsletter(newsletter: NewsletterDTO): Observable<NewsletterDTO>{
     console.log("mess newsletter");
-    this.webSocketService.sendName(newsletter);
+    //this.webSocketService.sendName(newsletter);
     //this.webSocketService.onConnect();
     debugger;
     return this.http.post<NewsletterDTO>(this.messUrl, newsletter, { headers: { 'Content-Type': 'application/json' } }).pipe();

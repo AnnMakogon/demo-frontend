@@ -1,26 +1,112 @@
 import { Injectable } from '@angular/core';
-import * as SockJS from 'sockjs-client';
-import * as Stomp from 'stompjs';
-import * as StompJs from '@stomp/stompjs';
+import { Observable, Subject } from 'rxjs';
+
+import {io} from 'socket.io-client';
 import { NewsletterDTO } from '../dto/NewsletterDTO';
-import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
+import { EmailTableComponent } from '../emailTable/emailTable.component';
+
+const SERVER_URL = 'http://localhost:8080';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketServiceService {
-
   private socket: WebSocket;
+  public message: Subject<NewsletterDTO> = new Subject<NewsletterDTO>();
+  private greeting: NewsletterDTO;
+
+  constructor() {
+    this.socket = new WebSocket('ws://localhost:8080/gs-guide-websocket/');
+    this.greeting = new NewsletterDTO();
+    this.connect();
+  }
+  private connect(): void{
+
+    this.socket.onopen = (event) => {   // Событие при успешном открытии соединения
+      console.log('Connected: ', event);
+      this.socket.send(JSON.stringify({ action: 'subscribe', topic: '/topic/greetings'}));
+    };
+
+    this.socket.onmessage = (event) => { //получение данных, автоматически срабатывает, когда приходит ответ с сервера
+      this.setMess(event);
+    };
+
+    this.socket.onclose = (event) => {
+      console.log('Disconnected: ', event);
+    };
+
+    this.socket.onerror = (error) => {
+      console.error('WebSocket Error: ', error);
+    };
+
+  }
+  sendName(nl: NewsletterDTO): void {     // заходит сюда
+    if (this.socket.readyState === WebSocket.OPEN) {
+      debugger;
+      this.socket.send(JSON.stringify({
+        destination: '/app/hello',
+        headers: {},
+        body: JSON.stringify({nl})
+      }));
+    } else {
+      console.error('Websocket is not connected.');
+    }
+  }
+  private setMess(event: MessageEvent): any {
+    const message = JSON.parse(event.data);
+      if (message.channel === '/topic/greetings') {
+        this.greeting = message.payload; // Сохранение ответа в поле класса
+        console.log('greeting received: ', this.greeting);
+      }
+    return this.greeting;
+  }
+
+  disconnect(): void {
+    console.log("Disconnect()");
+
+    if (this.socket.readyState === WebSocket.OPEN){
+      this.socket.close();
+    }
+  }
+
+  /*private socket : any;
+
+    public initSocket(): void {
+        this.socket = io(SERVER_URL);
+    }
+
+    public send(message: NewsletterDTO): void {
+        this.socket.emit('message', message);
+    }
+
+    public onMessage(): Observable<NewsletterDTO> {
+        return new Observable<NewsletterDTO>(observer => {
+            this.socket.on('message', (data: NewsletterDTO) => observer.next(data));
+        });
+    }
+
+    public onEvent(event: Event): Observable<any> {
+        return new Observable<Event>(observer => {
+            this.socket.on(event, () => observer.next());
+        });
+    } <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<РАБОТАЕТ:<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,*/
+
+  /*private socket: WebSocket;
 
   constructor(){
-    this.socket = new WebSocket('ws://localhost:8080/gs-guide-websocket/websocket');
+    this.socket = new WebSocket('ws://localhost:8080/gs-guide-websocket/');
 
     this.socket.onopen = (event) => {
       console.log('Connected: ', event);
+      console.log(this.socket.readyState);
+      this.socket.send(JSON.stringify({ action: 'subscribe', topic: '/topic/greetings'}));
     };
 
+
     this.socket.onmessage = (event) => {
-      const greeting = JSON.parse(event.data); //здесь дальнейшая работа с данными
+      const greeting = JSON.parse(event.data); //это и есть ответ от сервера
+      debugger;
+      console.log("AAAAAAA" + greeting); //здесь дальнейшая работа с данными
     };
 
     this.socket.onclose = (event) => {
@@ -33,19 +119,24 @@ export class WebsocketServiceService {
   }
 
   connect(): void {
+    console.log("Connect()");
+
     if (this.socket.readyState !== WebSocket.OPEN) {
-      this.socket = new WebSocket('ws://localhost:8080/gs-guide-websocket/websocket');
+      this.socket = new WebSocket('ws://localhost:8080/gs-guide-websocket/');
     }
   }
 
   disconnect(): void {
+    console.log("Disconnect()");
+
     if (this.socket.readyState === WebSocket.OPEN){
       this.socket.close();
     }
   }
 
-  sendName(nl: NewsletterDTO): void {
+  sendName(nl: NewsletterDTO): void {     // заходит сюда
     if (this.socket.readyState === WebSocket.OPEN) {
+      debugger;
       this.socket.send(JSON.stringify({
         destination: '/api/mail/app/hello',
         body: JSON.stringify({'id': nl.id, 'date': nl.date, 'mess': nl.mess, 'status': nl.status, 'subject': nl.subject, 'text': nl.text})
@@ -58,11 +149,15 @@ export class WebsocketServiceService {
   subscribeTopic(){
     this.socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
+      const greeting = JSON.parse(event.data); //это и есть ответ от сервера
+      debugger;
+      console.log("AAAAAAA" + greeting); //здесь дальнейшая работа с данными
       if (message.channel === '/topic/greetings'){
         console.log('greeting received: ', message.payload);
       }
     };
-  }
+  }*/
+ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   /*private stompClient: StompJs.Client;
 
   constructor(){

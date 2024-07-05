@@ -4,6 +4,7 @@ import { Route, Router } from '@angular/router';
 import { NewsletterDTO } from 'src/app/dto/NewsletterDTO';
 import { EmailTableComponent } from 'src/app/emailTable/emailTable.component';
 import { EmailServiceService } from 'src/app/service/email-service.service';
+import { WebsocketServiceService } from 'src/app/service/websocket-service.service';
 
 @Component({
   selector: 'app-newsletter',
@@ -26,7 +27,8 @@ export class CreateNewsletterComponent implements OnInit {
   year: string;
 
   constructor( private emailService: EmailServiceService,
-               private route: Router
+               private route: Router,
+               private socketService: WebsocketServiceService
    ) {
     this.newsletter = new NewsletterDTO();
     this.date = "";
@@ -49,13 +51,8 @@ export class CreateNewsletterComponent implements OnInit {
     this.newsletter.date = this.date;
     debugger;
     console.log(this.date);
-    this.emailService.messNewsletter(this.newsletter).subscribe(() => {
-      setTimeout(() => {
-        //EmailTableComponent.updateData();
-        console.log("Отправлено");
-      }, this.calculateTimeDifference(this.newsletter.date) )
-      //здесь через какое-то время делается updateData() зависимое от даты
-     });
+    //this.emailService.messNewsletter(this.newsletter).subscribe(() => {});//отправка через httpClient
+    this.socketService.sendName(this.newsletter); //отправка на сервер
     this.route.navigate(['/tabs']);
   }
 
