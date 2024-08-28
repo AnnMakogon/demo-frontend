@@ -1,34 +1,33 @@
-import { Newsletter } from './../models/newsletter';
+import { NewsletterWithDate } from '../../dto/NewsletterWithDate';
 import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { NewsletterDTO } from '../dto/NewsletterDTO';
-import { EmailServiceService } from '../service/email-service.service';
+import { EmailServiceService } from '../../service/email-service.service';
 import { Sort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { PutDialogEmailComponent } from '../components/dialog-wrappers/put-dialog-email/put-dialog-email.component';
+import { PutDialogEmailComponent } from '../dialog-wrappers/put-dialog-email/put-dialog-email.component';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { PutDataDialogEmailComponent } from '../components/dialog-wrappers/putData-dialog-email/putData-dialog-email.component';
-import { DateForChangeDto } from '../dto/DateForChangeDTO';
+import { PutDataDialogEmailComponent } from '../dialog-wrappers/putData-dialog-email/putData-dialog-email.component';
+import { DateForChange } from '../../dto/DateForChange';
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
-import { DelDialogEditWrapperComponent } from '../components/dialog-wrappers/del-dialog-student/del-dialog-edit-wrapper.component';
-import { WebsocketServiceService } from '../service/websocket-service.service';
-
+import { DelDialogEditWrapperComponent } from '../dialog-wrappers/del-dialog-student/del-dialog-edit-wrapper.component';
+import { WebsocketServiceService } from '../../service/websocket-service.service';
+import { Newsletter } from 'src/app/dto/Newsletter';
 
 @Component({
   selector: 'app-emailTable',
-  templateUrl: './emailTable.component.html',
-  styleUrls: ['./emailTable.component.scss']
+  templateUrl: './email-table.component.html',
+  styleUrls: ['./email-table.component.scss']
 })
 export class EmailTableComponent implements OnInit {
 
   pageSize: number = 10;
   pageNum: number = 0;
-  column: String = "id";
-  direction: String = "";
-  filterValue: String = "";
+  column: string = "date";
+  direction: string = "";
+  filterValue: string = "";
 
   showflag: boolean;
   showStatus: boolean;
@@ -41,16 +40,16 @@ export class EmailTableComponent implements OnInit {
 
   countColumn: number = 0;
 
-  displayedColumns: string[] = ['demo-id', 'demo-subject', 'demo-text', 'demo-date', 'demo-mess', 'demo-status', 'demo-action' ];
+  displayedColumns: string[] = ['demo-id', 'demo-subject', 'demo-text', 'demo-date', 'demo-sent', 'demo-status', 'demo-action' ];
 
   private stompClient: any;
 
   ioConnection: any;
   messageContent: string = " ";
 
-  dataSource = new MatTableDataSource<NewsletterDTO>;
+  dataSource = new MatTableDataSource<Newsletter>;
 
-  private greeting: NewsletterDTO;
+  private greeting: Newsletter;
 
   constructor(private route: Router,
               private emailService: EmailServiceService,
@@ -59,38 +58,13 @@ export class EmailTableComponent implements OnInit {
     this.dataSource = new MatTableDataSource();
     this.showflag = false;
     this.showStatus = false;
-    this.greeting = new NewsletterDTO();
+    this.greeting = new Newsletter();
   }
 
   ngOnInit() {
     console.log ("Email Table Component");
-    //this.emailService.getNlPagSortFilter.subscribe(() => {});
-    //this.initIoConnection();
     this.updateData();
-    this.socketService.message.subscribe(() =>{
-      this.updateData();
-    })
-    //this.initializeWebSocketConnection();
   }
-
-  /*private initIoConnection(): void{
-    this.socketService.initSocket();
-
-    this.ioConnection = this.socketService.onMessage()
-      .subscribe((message: NewsletterDTO) => {
-        //this.messages.push(message);}//здесь добавление в массив
-      })
-
-      this.socketService.onEvent(Event.CONNECT)
-      .subscribe(() => {
-        console.log('connected');
-      });
-
-    this.socketService.onEvent(Event.DISCONNECT)
-      .subscribe(() => {
-        console.log('disconnected');
-      });
-  }*/
 
   setshowStatus(event: any):void{
     this.showStatus = event.checked;
@@ -98,13 +72,30 @@ export class EmailTableComponent implements OnInit {
   }
 
   updateData(){
-    this.emailService.getFullLength(this.filterValue, this.showflag).subscribe((length: number) => {
-      this.totalDataLength = length;
+    this.emailService.getNlPage(this.pageNum, this.pageSize, this.column, this.direction, this.filterValue, this.showflag).subscribe( data => {
+      data.content.forEach((nl) =>{
+        if(nl.sent === true ){
+          nl.sent = "Successfully sent";
+        }else{
+          nl.sent = "Letter in queue";
+        }
+        if(nl.status === "INPROCESSING" ){
+          nl.status = "In Processing";
+        }else{
+          if(nl.status === "ERROR"){
+            nl.status = "Error";
+          } else {
+            nl.status = "Succesfully"
+          }
+        }
+      });
+      this.dataSource.data = data.content.map((nl) => {
+        nl.date = nl.date.replace("T", " ").split(".")[0];
+        return nl;
+      });
+      this.totalDataLength = data.totalElements;
     })
 
-    this.emailService.getNlPagSortFilter(this.pageNum, this.pageSize, this.column, this.direction, this.filterValue, this.showflag).subscribe( data => {
-      this.dataSource.data = data;
-    })
   }
 
   sortData( sortState: Sort ){
@@ -118,8 +109,9 @@ export class EmailTableComponent implements OnInit {
     this.updateData();
   }
 
-  newNewsletter():void {
+  createNewsletter():void {
     this.route.navigate(['/newNewsletter']);
+
     this.updateData();
   }
 
@@ -128,28 +120,36 @@ export class EmailTableComponent implements OnInit {
     this.updateData();
   }
 
-  updateEmail(newsletter: NewsletterDTO){
+  changeNl(newsletter: Newsletter){
     const dialogPutEmail = this.dialog.open(PutDialogEmailComponent, {
       width: '400px',
       data: newsletter
     });
-    dialogPutEmail.afterClosed().subscribe((result : NewsletterDTO) => {
+    dialogPutEmail.afterClosed().subscribe((result : NewsletterWithDate) => {
       if(result != null) {
-        console.log("puting nl with text: " + newsletter.text);
-        this.emailService.changeNl(result/*, newsletter.id*/).subscribe(() => {
+        console.log("puting nl with date: " + result.date);
+        const resultDTO = new Newsletter();
+        resultDTO.id = result.id;
+        resultDTO.date = `${result.date.calendarDate} ${result.date.hour}:${result.date.minute}`;
+        resultDTO.text = result.text;
+        resultDTO.subject = result.subject;
+        resultDTO.sent = result.sent;
+        resultDTO.status = result.status;
+
+        this.emailService.changeNl(resultDTO).subscribe(() => {
           this.updateData();
         })
       }
+      this.updateData();
     })
   }
 
-  changeDateNl(newsletter: NewsletterDTO){
+  changeDateNl(newsletter: Newsletter){
     const dialogPutDateEmail = this.dialog.open(PutDataDialogEmailComponent, {
       width: '400px',
       data: newsletter
     });
-    dialogPutDateEmail.afterClosed().subscribe((result : DateForChangeDto) => {
-      debugger;
+    dialogPutDateEmail.afterClosed().subscribe((result : DateForChange) => {
       if(result != null) {
         console.log("ReDate nl with text: " + newsletter.text);
         this.emailService.changeDateNl(newsletter, result).subscribe(() => {
@@ -159,7 +159,7 @@ export class EmailTableComponent implements OnInit {
     })
   }
 
-  deleteEmail(newsletter: Newsletter){
+  deleteNl(newsletter: NewsletterWithDate){
     const dialogDelEmail = this.dialog.open(DelDialogEditWrapperComponent, {
       width: '400px',
       data: newsletter
@@ -202,6 +202,10 @@ export class EmailTableComponent implements OnInit {
       this.updateData();
 
     return this.greeting;
+  }
+
+  navigateTo(route: string) {
+    this.route.navigate([route]);
   }
 
 }

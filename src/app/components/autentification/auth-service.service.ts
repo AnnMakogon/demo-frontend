@@ -2,8 +2,9 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Base64 } from './Base64';
-import { StudentRegistrDTO } from 'src/app/dto/StudentRegistrDTO';
-import { UserLoginDTO } from 'src/app/dto/UserLoginDTO';
+import { StudentRegistr } from 'src/app/dto/StudentRegistr';
+import { UserLogin } from 'src/app/dto/UserLogin';
+import { User } from 'src/app/dto/User';
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +14,16 @@ export class AuthServiceService {
 
   constructor( private http: HttpClient ) {}
 
-  loginUser(user: UserLoginDTO): Observable<Array<Object>[]> {
+  loginUser(user: UserLogin): Observable<User> {
     const userUrl = '/api/login';
-    const np: string = user.fio + ":" + user.password_id;
+    const np: string = user.fio + ":" + user.passwordId;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Basic '+ Base64.encode(np)
     });
 
     console.log ('auth this student');
-    return this.http.post<Array<Object>[]>(userUrl, null, {headers}).pipe();
+    return this.http.post<User>(userUrl, null, {headers}).pipe();
   }
 
   logoutUser(): Observable<HttpResponse<Array<Object>[]>> {
@@ -35,14 +36,15 @@ export class AuthServiceService {
     return this.http.post<HttpResponse<Array<Object>[]>>(userUrl, {headers});
   }
 
-  registration(student: StudentRegistrDTO) {
+  registration(student: StudentRegistr): Observable<StudentRegistr> {
     const userUrl = '/api/base/registration/'
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
 
-    console.log('registration');
-    return this.http.post<StudentRegistrDTO>(userUrl, student, {headers}).subscribe();
+    console.log('registration of user: ' + student.fio);
+    debugger;
+    return this.http.post<StudentRegistr>(userUrl, student, {headers});
   }
 
 }

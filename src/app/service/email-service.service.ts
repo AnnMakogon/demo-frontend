@@ -1,10 +1,11 @@
-import { NewsletterDTO } from 'src/app/dto/NewsletterDTO';
+
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DateForChangeDto } from '../dto/DateForChangeDTO';
+import { DateForChange } from '../dto/DateForChange';
 import { WebsocketServiceService } from './websocket-service.service';
-import { MatTableDataSource } from '@angular/material/table';
+import { Page } from '../dto/Page';
+import { Newsletter } from '../dto/Newsletter';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'}),
@@ -22,49 +23,73 @@ export class EmailServiceService {
    ) { }
 
   //создание и отправка
-  messNewsletter(newsletter: NewsletterDTO): Observable<NewsletterDTO>{
-    console.log("mess newsletter");
-    //this.webSocketService.sendName(newsletter);
-    //this.webSocketService.onConnect();
-    debugger;
-    return this.http.post<NewsletterDTO>(this.messUrl, newsletter, { headers: { 'Content-Type': 'application/json' } }).pipe();
+  messNewsletter(newsletter: Newsletter): Observable<Newsletter>{
+    console.log(JSON.stringify(newsletter));
+    return this.http.post<Newsletter>("/api/mail/newsletter", newsletter, { headers: { 'Content-Type': 'application/json' } }).pipe();
   }
 
-  changeNl(changingNl: NewsletterDTO/*, id: any*/): Observable<NewsletterDTO> {
-    console.log("change this nl");
-    //id = Number(id);
-    return this.http.put<NewsletterDTO>(this.messUrl, {id: changingNl.id, date: changingNl.date, text: changingNl.text, subject: changingNl.subject, mess: changingNl.mess, status: changingNl.status }, httpOptions).pipe();
+  changeNl(changingNl: Newsletter): Observable<Newsletter> {
+    console.log(changingNl);
+    if(changingNl.sent === "Successfully sent" ){
+      changingNl.sent = true;
+    }else{
+      changingNl.sent = false;
+    }
+    if(changingNl.status === "In Processing" ){
+      changingNl.status = "INPROCESSING";
+    }else{
+      if(changingNl.status === "Error"){
+        changingNl.status = "ERROR";
+      } else {
+        changingNl.status = "SUCCESSFULLY"
+      }
+    }
+    return this.http.put<Newsletter>(this.messUrl, changingNl, { headers: { 'Content-Type': 'application/json' } }).pipe();
   }
 
-  changeDateNl(changingNl: NewsletterDTO, newdate: DateForChangeDto): Observable<NewsletterDTO> {
-    console.log("change date of this nl");
+  changeDateNl(changingNl: Newsletter, newdate: DateForChange): Observable<Newsletter> {
+    console.log(changingNl, newdate);
     const messUrlData = "api/mail/newsletterDate";
-    debugger
-    const dateString = newdate.calendarDate + " " + newdate.minute + ":" + newdate.hour;
-    return this.http.put<NewsletterDTO>(messUrlData, {id: changingNl.id, date: dateString, text: changingNl.text, subject: changingNl.subject, mess: changingNl.mess, status: changingNl.status }).pipe();
+    const dateString = newdate.calendarDate + " " + newdate.hour + ":" + newdate.minute;
+    if(changingNl.sent === "Successfully sent" ){
+      changingNl.sent = true;
+    }else{
+      changingNl.sent = false;
+    }
+    if(changingNl.status === "In Processing" ){
+      changingNl.status = "INPROCESSING";
+    }else{
+      if(changingNl.status === "Error"){
+        changingNl.status = "ERROR";
+      } else {
+        changingNl.status = "SUCCESSFULLY"
+      }
+    }
+    changingNl.date = newdate.calendarDate + " " + newdate.hour + ":" + newdate.minute;
+    return this.http.put<Newsletter>(messUrlData, changingNl /*{id: changingNl.id, date: dateString, text: changingNl.text, subject: changingNl.subject, sent: changingNl.sent, status: changingNl.status }*/).pipe(); //здесь changingNl.status = "Delivered"
   }
 
-  deletNl(id: number): Observable<NewsletterDTO>{
-    return this.http.delete<NewsletterDTO>(this.messUrl + "/" + id.toString()).pipe();
+  deletNl(id: number): Observable<Newsletter>{
+    return this.http.delete<Newsletter>(this.messUrl + "/" + id.toString()).pipe();
   }
 
-  getNlPagSortFilter(page: Number, size: Number, column: String, direction: String, filter: String, showflag: boolean): Observable<NewsletterDTO[]>{
-    let params = new HttpParams()
+  getNlPage(page: Number, size: Number, column: String, direction: String, filter: String, showflag: boolean): Observable<Page<Newsletter>>{
+  /*getNlPagSortFilter(forGet: ForGet): Observable<NewsletterDTO[]>{
+    let params = new HttpParams();
+    for (const key in forGet) {
+      if (forGet.hasOwnProperty(key)) {
+        params = params.set(key, (forGet as any)[key]);
+      }
+    }*/
+    const params = new HttpParams()
               .append('page', page.toString())
               .append('size', size.toString())
               .append('column', column.toString())
               .append('direction', direction.toString())
               .append('filter', filter.toString())
-              .append('showflag', showflag);
+              .append('showFlag', showflag);
 
-    return this.http.get<NewsletterDTO[]>(this.messUrl, {params});
-  }
-
-  getFullLength(filter: String, showflag: boolean): Observable<number>{
-    let params = new HttpParams()
-              .append('filter', filter.toString())
-              .append('showflag', showflag);
-    return this.http.get<number>('api/mail/length',{params});
+    return this.http.get<Page<Newsletter>>(this.messUrl, {params});
   }
 
 

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Student } from '../models/student';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { StudentRegistrDTO } from '../dto/StudentRegistrDTO';
-import { StudentUpdateDTO } from '../dto/StudentUpdateDTO';
-import { StudentFullTableDTO } from '../dto/StudentFullTableDTO';
-import { UserDTO } from '../dto/UserDTO';
+import { StudentRegistr } from '../dto/StudentRegistr';
+import { StudentUpdate } from '../dto/StudentUpdate';
+import { StudentFullTable } from '../dto/StudentFullTable';
+import { Page } from '../dto/Page';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'}),
@@ -28,7 +27,7 @@ export class StudentServiceService {
 
   constructor( private http: HttpClient ) { }
 
-  getStudentsPag(page: Number, size: Number, column: String, direction: String, filter: String): Observable<StudentFullTableDTO[]> {
+  getStudentsPage(page: Number, size: Number, column: String, direction: String, filter: String): Observable<Page<StudentFullTable>> {
     let params = new HttpParams()
               .append('page', page.toString())
               .append('size', size.toString())
@@ -36,35 +35,25 @@ export class StudentServiceService {
               .append('direction', direction.toString())
               .append('filter', filter.toString());
 
-    return this.http.get<StudentFullTableDTO[]>(this.studentsUrl, {params});
+    return this.http.get<Page<StudentFullTable>>(this.studentsUrl, {params});
   }
 
-  getPersUser(): Observable<UserDTO> {
-    return this.http.get<UserDTO>('api/persUser');
-  }
-
-  getFullLength(filter: String): Observable<number>{
-    let params = new HttpParams()
-              .append('filter', filter.toString());
-    return this.http.get<number>('api/base/length', {params});
-  }
-
-  registration(student: StudentRegistrDTO): Observable<StudentRegistrDTO> {
+  registration(student: StudentRegistr): Observable<StudentRegistr> {
     console.log('registration');
-    return this.http.post<StudentRegistrDTO>("api/base/registration/", student, httpOptions).pipe(); // не работеть запрос
+    return this.http.post<StudentRegistr>("api/base/registration/", student, httpOptions).pipe(); // не работеть запрос
   }
 
-  updateStudent(student: StudentUpdateDTO, id: any): Observable<null | StudentUpdateDTO> {
+  updateStudent(student: StudentUpdate, id: any): Observable<null | StudentUpdate> {
     console.log ('put this student');
     id = Number(id);
-    return this.http.put<StudentUpdateDTO>(this.studentsUrl, {id: id, fio: student.fio, group: student.group, phoneNumber: student.phoneNumber}, httpOptions).pipe();
+    return this.http.put<StudentUpdate>(this.studentsUrl, student, httpOptions).pipe();
   }
 
-  deleteStudent(id : Number): Observable<StudentFullTableDTO> {
+  deleteStudent(id : Number): Observable<StudentFullTable> {
     console.log ("Delete Student");
     const url = `${this.studentsUrl}` + `${id}`;
     debugger
-    return this.http.delete<StudentFullTableDTO>(url).pipe();
+    return this.http.delete<StudentFullTable>(url).pipe();
   }
 
 }

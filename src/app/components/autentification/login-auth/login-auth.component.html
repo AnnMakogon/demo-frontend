@@ -1,13 +1,19 @@
-<h1>{{title}}</h1>
+<h1 class="custom-label">{{ title }}</h1>
+<div class="form-container">
   <div class="container">
-    <input type="text" placeholder="Enter Username" [(ngModel)]="thisUser.fio" required>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter Name</mat-label>
+      <input matInput type="text" placeholder="Enter Username" [(ngModel)]="thisUser.fio" required>
+    </mat-form-field>
 
-    <input type="password" placeholder="Enter Password" [(ngModel)]="thisUser.password_id" required>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter Password</mat-label>
+      <input matInput type="password" placeholder="Enter Password" [(ngModel)]="thisUser.passwordId" required>
+    </mat-form-field>
 
-    <button class="right-align" mat-raised-button color="primary"
-    (click)="login()">Login</button>
-
-    Don't have a User?
-    <button class="right-align" mat-raised-button collor="primary"
-    (click)="registration()">Registration</button>
+    <button mat-raised-button color="primary" (click)="login()">Login</button>
+    <button mat-raised-button (click)="registration()">Registration</button>
   </div>
+</div>
+
+

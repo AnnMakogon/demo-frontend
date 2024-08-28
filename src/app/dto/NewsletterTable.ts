@@ -1,18 +1,16 @@
-export class NewsletterDTO {
+export class NewsletterTable {
   constructor(){
     this.id = null;
     this.date = "";
-    //this.address = "";
     this.text = "";
     this.subject = "";
-    this.mess = "";
+    this.sent = false;
     this.status = "";
   }
   id: null | number;
   date: string;
-  //address: string;
   text: string;
   subject: string;
-  mess: string;
+  sent: boolean | string;
   status: string;
 }

@@ -1,0 +1,73 @@
+<div>
+  <h2 class="label">Students</h2>
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="filterData($event)" placeholder="Filter" #input>
+  </mat-form-field>
+</div>
+
+<br>
+
+<div class="mat-elevation-z8 indent">
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+
+    <ng-container matColumnDef="demo-id">
+      <th mat-header-cell mat-sort-header="id" *matHeaderCellDef> ID </th>
+      <td width="5%" mat-cell *matCellDef="let student"> {{student.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-name">
+      <th mat-header-cell mat-sort-header="fio" *matHeaderCellDef> Fio </th>
+      <td width="30%" mat-cell *matCellDef="let student"> {{student.fio}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-group">
+      <th mat-header-cell mat-sort-header="group_of_students" *matHeaderCellDef> Group </th>
+      <td width="10%" mat-cell *matCellDef="let student"> {{student.group}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-phoneNumber">
+      <th mat-header-cell *matHeaderCellDef> PhoneNumber </th>
+      <td width="15%" mat-cell *matCellDef="let student"> {{student.phoneNumber}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-course">
+      <th mat-header-cell mat-sort-header="course" *matHeaderCellDef> Course </th>
+      <td width="10%" mat-cell *matCellDef="let student"> {{student.course}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-depName">
+      <th mat-header-cell *matHeaderCellDef> Department </th>
+      <td width="15%" mat-cell *matCellDef="let student"> {{student.departmentName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="demo-action">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td width="15%" mat-cell *matCellDef="let student">
+        <ng-container *ngIf="persUser.id == student.id || persUser.role == '[ADMIN]'">
+          <button mat-raised-button class="material-icons-outlined" (click)="updateStudent(student)">
+            edit
+          </button>
+          <button mat-raised-button class="material-icons-outlined" (click)="deleteStudent(student)">
+            delete
+          </button>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <mat-paginator
+              [length]="totalDataLength"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="onPageChange($event)"
+               showFirstLastButtons
+               aria-label="Select page of Students">
+  </mat-paginator>
+
+</div>

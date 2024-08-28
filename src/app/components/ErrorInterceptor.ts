@@ -6,7 +6,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class Error401InterceptorService implements HttpInterceptor{
+export class ErrorInterceptorService implements HttpInterceptor{
 
   constructor(private route: Router) {}
 
@@ -21,8 +21,11 @@ export class Error401InterceptorService implements HttpInterceptor{
         alert("Неверное Имя или Пароль");
       }
       if ([500].includes(err.status)) {
-        //this.route.navigate(['/login']);
-        alert("Серверная Ошибка, Щас починим");
+        alert("Серверная Ошибка, пожалуйста, подождите");
+      }
+      if ([409].includes(err.status)) {
+        alert("Пользователь с таким именем уже есть, пожалуйста, введите другое имя");
+        this.route.navigate(['/registration']);
       }
 
       const error = err.error?.message || err.statusText;

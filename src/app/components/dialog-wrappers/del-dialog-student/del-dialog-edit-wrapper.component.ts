@@ -1,6 +1,6 @@
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Component, Inject, OnInit } from '@angular/core';
-import { StudentFullTableDTO } from 'src/app/dto/StudentFullTableDTO';
+import { StudentFullTable } from 'src/app/dto/StudentFullTable';
 
 @Component({
   selector: 'app-del-dialog-edit-wrapper',
@@ -9,10 +9,10 @@ import { StudentFullTableDTO } from 'src/app/dto/StudentFullTableDTO';
 })
 export class DelDialogEditWrapperComponent implements OnInit {
 
-  decision: StudentFullTableDTO;
+  decision: StudentFullTable;
 
   constructor(public dialogRef: MatDialogRef<DelDialogEditWrapperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StudentFullTableDTO){
+    @Inject(MAT_DIALOG_DATA) public data: StudentFullTable){
       this.decision = data;
     }
 

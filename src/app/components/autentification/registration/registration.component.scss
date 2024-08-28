@@ -6,56 +6,19 @@ form {
 input[type=text], input[type=password] {
   width: 100%;
   padding: 12px 20px;
-  margin: 8px 0;
+  //margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
 
-/* Set a style for all buttons */
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-}
-
-/* Add a hover effect for buttons */
-button:hover {
-  opacity: 0.8;
-}
-
-/* Extra style for the cancel button (red) */
-.cancelbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #f44336;
-}
-
-/* Center the avatar image inside this container */
-.imgcontainer {
-  text-align: center;
-  margin: 24px 0 12px 0;
-}
-
-/* Avatar image */
-img.avatar {
-  width: 40%;
-  border-radius: 50%;
-}
 
 /* Add padding to containers */
 .container {
-  padding: 16px;
-}
-
-/* The "Forgot password" text */
-span.psw {
-  float: right;
-  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 /* Change styles for span and cancel button on extra small screens */
@@ -68,3 +31,109 @@ span.psw {
       width: 100%;
   }
 }
+
+.custom-button {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 120px;
+  height: 40px;
+  font-size: 16px;
+  background-color:#6484ed;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+h1.custom-label {
+  margin-top: 30px;
+  text-align: center;
+  font-family: 'Arial', cursive !important;
+  margin-bottom: 10px; /* Уменьшение пространства между заголовком и формой */
+}
+
+.form-container {
+  background-color:hsl(226, 79%, 66%); /* Голубой оттенок */
+  border-radius: 15px; /* Закругленные углы */
+  padding: 20px; /* Внутренние отступы */
+  margin: 0 auto; /* Выравнивание по центру */
+  max-width: 630px; /* Максимальная ширина */
+  max-height: 700px;
+}
+
+.castom-input{
+  width: 500px;
+  margin-bottom: 20px;
+  flex: 1;
+  margin-right: 16px; /* Отступ между полями */
+}
+
+mat-form-field {
+  margin-bottom: 0; /* Убираем отступ снизу */
+}
+
+/* Убираем отступы у div, который содержит текст */
+div {
+  margin: 0; /* Убираем любые отступы */
+  padding: 0; /* Убираем любые внутренние отступы */
+}
+
+.castom-form-container {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Расстояние между полями */
+}
+
+/* Поля для формы */
+.form-field {
+  flex: 1; /* Позволяет полям занимать равное пространство */
+}
+
+/* Плейсхолдер для текстового сообщения */
+.placeholder {
+  width: 212px; /* Ширина для блока с текстом */
+  height: 50px; /* Высота для блока с текстом */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc; /* Обводка для визуального отделения */
+  box-sizing: border-box; /* Включает бордер в размер блока */
+  margin: 0;
+  padding: 0;
+  position: relative;
+  transform: translateY(-9px);
+}
+
+/* Стили для заголовка */
+h2.custom-label {
+  margin: 0; /* Убираем отступы */
+  padding: 0; /* Убираем внутренние отступы */
+  text-align: center;
+  font-family: 'Arial', cursive !important;
+  font-size: 15px; /* Меньший размер шрифта для соответствия размеру блока */
+}
+
+/* Применяем стили для всех mat-form-field с использованием ::ng-deep */
+::ng-deep .mat-form-field {
+  width: 25px; /* Ширина самого поля ввода */
+}
+
+::ng-deep .mat-form-field .mat-form-field-infix {
+  width: 100%; /* Заполняет ширину родительского контейнера */
+}
+
+::ng-deep .mat-select {
+  width: 25px; /* Ширина для выпадающего списка */
+  overflow: hidden; /* Скрываем содержимое, которое выходит за границы */
+}
+
+::ng-deep .mat-select .mat-select-trigger {
+  width: 25px; /* Устанавливаем ширину для области триггера выбора */
+  overflow: hidden; /* Скрываем лишний текст */
+  text-overflow: ellipsis; /* Добавляем многоточие, если текст слишком длинный */
+  white-space: nowrap; /* Предотвращаем перенос текста */
+}
+
+::ng-deep .mat-select-panel {
+  width: 25px; /* Ширина выпадающего списка */
+}
+

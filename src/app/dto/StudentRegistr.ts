@@ -1,13 +1,15 @@
-export class StudentRegistrDTO {    //то, что вводит при регестрации
+export class StudentRegistr {    //то, что вводит при регестрации
   constructor() {
     this.id = null;
     this.fio = "";
     this.group = "";
     this.phoneNumber = "";
-    this.role = "";
-    this.password_id = "";
+    this.role = "STUDENT";
+    this.passwordId = "";
     this.enable = true;
     this.email = "";
+    this.departmerntName = "";
+    this.course = "";
   }
 
   id: number | null;
@@ -15,7 +17,9 @@ export class StudentRegistrDTO {    //то, что вводит при реге�
   group: string;
   phoneNumber: string;
   role: string;
-  password_id: string;
+  passwordId: string;
   enable: boolean;
   email: string;
+  departmerntName: string;
+  course: string;
 }

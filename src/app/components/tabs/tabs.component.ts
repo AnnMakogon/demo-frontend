@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserDTO } from 'src/app/dto/UserDTO';
+import { Router, NavigationEnd  } from '@angular/router';
+import { User } from 'src/app/dto/User';
 import { StudentServiceService } from 'src/app/service/student-service.service';
+import { MaterialTableComponent } from '../student-table/student-table.component';
+import { EmailTableComponent } from '../email-table/email-table.component';
+import { LogoutAuthComponent } from '../autentification/logout-auth/logout-auth.component';
 
 @Component({
   selector: 'app-tabs',
@@ -8,16 +12,40 @@ import { StudentServiceService } from 'src/app/service/student-service.service';
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements OnInit {
-  persUser: UserDTO;
+  persUser: User;
+  selectedIndex: number = 0;
+  title: string = "Hello";
+  isAdmin: boolean = false;
 
-  constructor(private baseService: StudentServiceService){
-    this.persUser = new UserDTO();
+  constructor(private baseService: StudentServiceService,
+    private router: Router,
+    private logoutAut: LogoutAuthComponent, ){
+      this.persUser = new User();
   }
 
+  /*navigateTo(route: string) {
+    this.router.navigate([route]);
+  }*/
+
   ngOnInit() {
-    this.baseService.getPersUser().subscribe(( persUser: UserDTO) => {
-      this.persUser = persUser;
-    });
+    const userData = sessionStorage.getItem("0");
+    if(userData) {
+      this.persUser = JSON.parse(userData);
+    }
+    this.checkRole();
+    this.title = "Hello Mr." + this.persUser.username;
+  }
+
+  logout(): void {
+    this.logoutAut.logout();
+  }
+
+  checkRole() {
+    if (this.persUser && this.persUser.role === "[ADMIN]") {
+      this.isAdmin = true;
+    } else {
+      this.isAdmin = false;
+    }
   }
 
 }

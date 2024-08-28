@@ -2,7 +2,8 @@
 <div mat-dialog-content style="display: online; padding: 0px; margin:auto">
 
   <mat-form-field>
-    <mat-select placeholder="Minutes" [(ngModel)]="editingNlData.minute">
+    Минуты
+    <mat-select placeholder="Minutes" [(ngModel)]="editingNlDate.minute">
       <mat-option *ngFor="let m of minutes" [value]="m">
         {{m}}
       </mat-option>
@@ -10,7 +11,8 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Hourse" [(ngModel)]="editingNlData.hour">
+    Часы
+    <mat-select placeholder="Hourse" [(ngModel)]="editingNlDate.hour">
       <mat-option *ngFor="let h of hours" [value]="h">
         {{h}}
       </mat-option>
@@ -18,8 +20,8 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input  matInput [matDatepicker] ="picker" placeholder = "Выберите дату" (dateChange)="getDate($event)">
-      <mat-datepicker-toggle  matSuffix [for] ="picker"></mat-datepicker-toggle >
+    <input  matInput [matDatepicker] ="picker" [(ngModel)]="selectedDate" placeholder = "Выберите дату" (dateChange)="getDate($event)">
+      <mat-datepicker-toggle matSuffix [for] ="picker"></mat-datepicker-toggle >
     <mat-datepicker #picker ></mat-datepicker >
   </mat-form-field>
 
@@ -28,5 +30,5 @@
 <div mat-dialog-actions>
   <button mat-raised-button (click)="onNoClick()">Cancel</button>
   <button class="right-align" mat-raised-button color="primary"
-    [mat-dialog-close]="editingNlData">Update</button>
+    [mat-dialog-close]="editingNlDate">Update</button>
 </div>

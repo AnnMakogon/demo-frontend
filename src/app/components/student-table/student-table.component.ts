@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Student } from 'src/app/models/student';
 import { MatDialog } from '@angular/material/dialog';
 import { PutDialogEditWrapperComponent } from '../dialog-wrappers/put-dialog-student/put-dialog-edit-wrapper.component';
 import { PageEvent } from '@angular/material/paginator';
@@ -7,24 +6,24 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Sort } from '@angular/material/sort';
 import { LogoutAuthComponent } from '../autentification/logout-auth/logout-auth.component';
-import { StudentUpdateDTO } from 'src/app/dto/StudentUpdateDTO';
-import { StudentFullTableDTO } from 'src/app/dto/StudentFullTableDTO';
-import { UserDTO } from 'src/app/dto/UserDTO';
+import { StudentUpdate } from 'src/app/dto/StudentUpdate';
+import { StudentFullTable } from 'src/app/dto/StudentFullTable';
+import { User } from 'src/app/dto/User';
 import { DelDialogEditWrapperComponent } from '../dialog-wrappers/del-dialog-student/del-dialog-edit-wrapper.component';
 import { StudentServiceService } from 'src/app/service/student-service.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-material-table',
-  templateUrl: './material-table.component.html',
-  styleUrls: ['./material-table.component.scss'],
+  selector: 'app-student-table',
+  templateUrl: './student-table.component.html',
+  styleUrls: ['./student-table.component.scss'],
   providers:[LogoutAuthComponent],
 })
 export class MaterialTableComponent implements OnInit{
 
   pageSize: number = 10;
   pageNum: number = 0;
-  column: String = "id";
+  column: String = "fio";
   direction: String = "";
   filterValue: String = "";
 
@@ -36,27 +35,30 @@ export class MaterialTableComponent implements OnInit{
 
   countColumn: number = 0;
 
-  displayedColumns: string[] = ['demo-id', 'demo-name', 'demo-surname', 'demo-phoneNumber', 'demo-action'];
+  displayedColumns: string[] = ['demo-id', 'demo-name', 'demo-group', "demo-course", "demo-depName", 'demo-phoneNumber', 'demo-action'];
 
-  persUser: UserDTO;
+  persUser: User;
 
-  dataSource = new MatTableDataSource<StudentFullTableDTO>;
+  dataSource = new MatTableDataSource<StudentFullTable>;
   constructor(
     private baseService: StudentServiceService,
     public dialog: MatDialog,
     private logoutAut: LogoutAuthComponent,
+    private route: Router
 
   ) {
     this.dataSource = new MatTableDataSource();
-    this.persUser = new UserDTO();
+    this.persUser = new User();
   }
 
   ngOnInit(): void{
     console.log ("Material Table Component");
-    this.baseService.getPersUser().subscribe(( persUser: UserDTO) => {
-      this.persUser = persUser;
-    });
+    const userData = sessionStorage.getItem("0");
+    if(userData) {
+      this.persUser = JSON.parse(userData);
+    }
     this.updateData();
+    console.log(sessionStorage);
   }
 
   onPageChange(event: PageEvent) {
@@ -67,19 +69,10 @@ export class MaterialTableComponent implements OnInit{
   }
 
   updateData() {
-    this.baseService.getFullLength(this.filterValue).subscribe((length: number) => {
-      this.totalDataLength = length;
-    })
-
-    this.baseService.getStudentsPag(this.pageNum, this.pageSize, this.column, this.direction, this.filterValue).subscribe( data => {
-      this.dataSource.data = data;
-      this.dataSource.data.forEach((student: StudentFullTableDTO) =>{
-        if(student.fio == this.persUser.username){
-          this.persUser.id = student.id;
-        }
-      })
+    this.baseService.getStudentsPage(this.pageNum, this.pageSize, this.column, this.direction, this.filterValue).subscribe( data => {
+      this.dataSource.data = data.content;
+      this.totalDataLength = data.totalElements;
     });
-
   }
 
   sortData( sortState: Sort ){
@@ -98,13 +91,14 @@ export class MaterialTableComponent implements OnInit{
     this.updateData();
   }
 
-  updateStudent(student : StudentUpdateDTO): void {
+  updateStudent(student : StudentUpdate): void {
     const dialogPutStudent = this.dialog.open(PutDialogEditWrapperComponent, {
       width: '400px',
       data: student
     });
-    dialogPutStudent.afterClosed().subscribe((result : StudentUpdateDTO) => {
+    dialogPutStudent.afterClosed().subscribe((result : StudentUpdate) => {
       if(result != null) {
+        debugger;
         console.log ("puting student: " + student.fio);
         this.baseService.updateStudent(result, student.id).subscribe( () => {
           this.updateData();
@@ -113,7 +107,7 @@ export class MaterialTableComponent implements OnInit{
     });
   }
 
-  deleteStudent(student: StudentFullTableDTO): void {
+  deleteStudent(student: StudentFullTable): void {
     const dialogDelStudent = this.dialog.open(DelDialogEditWrapperComponent, {
       width: '400px',
       data: student
@@ -134,6 +128,8 @@ export class MaterialTableComponent implements OnInit{
     this.logoutAut.logout();
   }
 
-
+  navigateTo(route: string) {
+    this.route.navigate([route]);
+  }
 
 }

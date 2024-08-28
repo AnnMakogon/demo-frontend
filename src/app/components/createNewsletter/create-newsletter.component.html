@@ -1,0 +1,112 @@
+<button mat-raised-button color="primary" class="custom-button" (click)="cancel()">Cancel</button>
+<h1 class="custom-label">{{title}}</h1>
+<div class="form-container">
+
+  <div class="container">
+    <div class="castom-header">
+
+      <h2 class="custom-label">To Whom</h2>
+
+      <div class="dropdown-container">
+        <button mat-raised-button color="primary" (click)="toggleDropdown()">Choose Address</button>
+        <div class="dropdown-content" *ngIf="isDropdownOpen">
+          <div class="checkbox-container">
+            <input type="checkbox" [checked]="checkboxAdmin[0].checked" (change)="onCheckboxChangeAdmin($event)">
+            {{ checkboxAdmin[0].name }}
+          </div>
+
+          <div *ngFor="let studentCourse of address">
+            <div (click)="toggleSubDropdown(studentCourse, $event)" class="castom-div">
+
+              <span *ngIf="studentCourse.isOpen">[ - ]</span>
+              <span *ngIf="!studentCourse.isOpen">[+]</span>
+              {{ studentCourse.name }}
+            </div>
+            <ul *ngIf="studentCourse.isOpen">
+
+              <li *ngFor="let course of studentCourse.items">
+                <div (click)="toggleSubDropdown(course, $event)" class="castom-course-div">
+
+                  <span *ngIf="course.isOpen">[ - ]</span>
+                  <span *ngIf="!course.isOpen">[+]</span>
+                  {{ course.name }}
+                </div>
+                <ul *ngIf="course.isOpen">
+                  <li *ngIf="course.items && course.items.length > 0">
+                    <div *ngFor="let department of course.items" class="flex-container">
+                      <div class="spacer"></div>
+                      <div (click)="toggleSubDropdown(department, $event)" class="castom-dep-div">
+
+                        <span *ngIf="department.isOpen">[ - ]</span>
+                        <span *ngIf="!department.isOpen">[+]</span>
+                        {{ department.name }}
+                      </div>
+                      <ul *ngIf="department.isOpen">
+                        <li *ngFor="let group of department.items" class="checkbox-in-container">
+                          <input type="checkbox" [checked]="group.checked"
+                            (change)="onCheckboxChangeGroup(group, $event)">
+                          {{ group.name }}
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li *ngIf="!course.items || course.items.length === 0">
+                    <div *ngFor="let group of course.groups" class="checkbox-in-container">
+                      <input type="checkbox" [checked]="group.checked" (change)="onCheckboxChangeGroup(group, $event)">
+                      {{ group.name }}
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <button mat-raised-button color="primary" (click)="saveSelection()"> OK </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="selected-addresses">
+      <div *ngFor="let item of selectedItems" class="selected-item">
+        {{ item.role }} - {{ item.course }} course - {{ item.department }} - Group {{ item.group.join(', ') }}
+      </div>
+    </div>
+
+    <mat-form-field appearance="fill" class="castom-text">
+      <mat-label>Enter Text</mat-label>
+      <input matInput type="text" placeholder="Enter Text Of Your Email" [(ngModel)]="newsletter.text" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="castom-subject">
+      <mat-label>Enter Subject</mat-label>
+      <input matInput type="text" placeholder="Enter Subject" [(ngModel)]="newsletter.subject" required>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field>
+        <mat-select placeholder="Minutes" [(ngModel)]="minute">
+          <mat-option *ngFor="let m of minutes" [value]="m">
+            {{m}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Hourse" [(ngModel)]="hour">
+          <mat-option *ngFor="let h of hours" [value]="h">
+            {{h}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Выберите дату" (dateChange)="setDate($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <button mat-raised-button (click)="messNewsletter()">Mess</button>
+  <button mat-raised-button color="primary" (click)="cancel()">Cancel</button>
+</div>

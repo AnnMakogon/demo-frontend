@@ -1,0 +1,383 @@
+form {
+  border: 3px solid #f1f1f1;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+
+/* Add padding to containers */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* The "Forgot password" text */
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+      display: block;
+      float: none;
+  }
+  .cancelbtn {
+      width: 100%;
+  }
+}
+.header {
+  background-color: #0b0bab; /* Темно-серый цвет фона */
+  color: white; /* Белый цвет текста */
+  padding: 10px 0;
+}
+.header a {
+  color: white; /* Белый цвет ссылок */
+  padding: 14px 16px;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
+}
+
+
+h1.custom-label {
+  margin-top: 30px;
+  text-align: center;
+  font-family: 'Arial', cursive !important;
+  margin-bottom: 10px; /* Уменьшение пространства между заголовком и формой */
+}
+
+h2.custom-label {
+  margin-top: 10px;
+  text-align: center;
+  font-family: 'Arial', cursive !important;
+  margin-bottom: 10px; /* Уменьшение пространства между заголовком и формой */
+}
+
+.form-container {
+  background-color:hsl(226, 79%, 66%); /* Голубой оттенок */
+  border-radius: 15px; /* Закругленные углы */
+  padding: 20px; /* Внутренние отступы */
+  margin: 0 auto; /* Выравнивание по центру */
+  max-width: 600px; /* Максимальная ширина */
+  max-height: 700px;
+}
+
+mat-form-field {
+  width: 80%; /* Увеличено для заполнения контейнера */
+}
+
+/* Основной контейнер для выпадающего списка */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Скрытый контент основного выпадающего списка */
+/*.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}*/
+
+/* Показывает контент выпадающего списка при открытии */
+.dropdown-content.show {
+  display: block;
+}
+
+/* Скрытый контент вложенного выпадающего списка */
+.sub-dropdown-content {
+  display: none;
+  background-color: #f9f9f9;
+  padding-left: 10px; /* Отступ для визуальной иерархии */
+}
+
+/* Показывает контент вложенного выпадающего списка при открытии */
+.sub-dropdown-content.show {
+  display: block;
+}
+
+.dropdown-container {
+  position: relative;
+  text-align:left;
+}
+
+/*.dropdown-container button {
+  background-color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  color: black;
+}*/
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 17px;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  display: inline-block;
+  z-index: 1;
+  border-radius: 5px;
+
+  width: auto;
+  height: auto;
+  max-width: 600px;
+  max-height: 600px;
+}
+
+.dropdown-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.dropdown-content li {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  display: block;
+}
+
+.dropdown-content li:last-child {
+  border-bottom: none;
+}
+
+.dropdown-content span {
+  float: right;
+}
+
+/*.dropdown-content button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}*/
+
+.selected-addresses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.selected-item {
+  padding: 0 10px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  border-right: 1px solid #fff;
+}
+
+/*.selected-addresses div {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.selected-addresses div:last-child {
+  border-bottom: none;
+}*/
+
+/*.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 17px;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  display: block;
+  z-index: 1;
+  border-radius: 5px;
+}
+
+.dropdown-content li {
+  display: block;
+}
+
+.dropdown-content li ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-content li ul li {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.dropdown-content li ul li:last-child {
+  border-bottom: none;
+}
+
+.dropdown-content li ul li input[type="checkbox"] {
+  float: right;
+  margin-right: 10px;
+}
+
+
+.dropdown-content > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-content > div input[type="checkbox"] {
+  margin-left: 10px;
+}*/
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-left: 10px;
+}
+
+.checkbox-in-container {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 20px;
+  width: 100%;
+}
+
+.checkbox-in-container input[type="checkbox"] {
+  margin-left: 30px;
+}
+
+.casom-li {
+  margin-left: 30px;
+}
+
+div span {
+  margin-right: 10px;
+}
+
+.castom-div{
+  display: flex;
+  align-items: center;
+  margin-left: 7px;
+}
+
+.castom-course-div {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  white-space: nowrap;
+}
+
+.castom-dep-div {
+  display: flex;
+  align-items: center;
+  margin-left: 35px;
+  white-space: nowrap;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.spacer {
+  width: 13px;
+}
+
+.form-row {
+  display: flex; /* Используем Flexbox */
+  flex-direction: row; /* Располагаем элементы горизонтально */
+  justify-content: 10px; /* Распределяем пространство между элементами */
+  align-items: center; /* Выравниваем элементы по вертикали */
+  margin-bottom: 16px; /* Добавляем отступ снизу */
+  width: 100%; /* Ширина контейнера */
+  gap: 10px;
+}
+
+
+.castom-text{
+  width: 500px;
+  margin-bottom: 20px;
+  flex: 1; /* Поля занимают равное пространство */
+  //min-width: 150px; /* Минимальная ширина поля */
+  //max-width: 400px; /* Максимальная ширина поля */
+  margin-right: 16px; /* Отступ между полями */
+}
+
+.custom-text .mat-form-field-infix {
+  height: 60px; /* Установите высоту поля ввода */
+}
+
+.custom-text .mat-label {
+  font-size: 16px; /* Размер шрифта для метки */
+}
+
+.castom-subject{
+  width: 500px;
+  margin-bottom: 20px;
+  flex: 1; /* Поля занимают равное пространство */
+  //min-width: 150px; /* Минимальная ширина поля */
+  //max-width: 200px; /* Максимальная ширина поля */
+  margin-right: 16px; /* Отступ между полями */
+}
+
+.custom-subject .mat-form-field-infix {
+  height: 60px; /* Установите высоту поля ввода */
+}
+
+.custom-subject .mat-label {
+  font-size: 16px; /* Размер шрифта для метки */
+}
+
+.castom-header{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.custom-button {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 120px;
+  height: 40px;
+  font-size: 16px;
+  background-color:#6484ed;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}

@@ -1,6 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { AuthServiceService } from '../auth-service.service';
-import { UserLoginDTO } from 'src/app/dto/UserLoginDTO';
+import { UserLogin } from 'src/app/dto/UserLogin';
 import { Router } from '@angular/router';
 import { WebsocketServiceService } from 'src/app/service/websocket-service.service';
 
@@ -16,22 +16,21 @@ import { WebsocketServiceService } from 'src/app/service/websocket-service.servi
 })
 export class LogoutAuthComponent implements OnInit {
 
-  editingUser: UserLoginDTO;
+  editingUser: UserLogin;
 
   constructor(private authService : AuthServiceService,
               private route : Router,
               private webSocketServece: WebsocketServiceService
   ) {
-    this.editingUser = new UserLoginDTO();
+    this.editingUser = new UserLogin();
   }
 
   ngOnInit() {}
 
   logout():void{
-    this.webSocketServece.disconnect();
-    this.authService.logoutUser().subscribe(() =>
-      this.route.navigate(['/login']));
-    this.editingUser = new UserLoginDTO();
+    this.authService.logoutUser().subscribe(() =>{
+      //sessionStorage.removeItem("0");    // это происходит каждый раз, когда на /login приходит
+      this.route.navigate(['/login']);
+    });
   }
-
 }

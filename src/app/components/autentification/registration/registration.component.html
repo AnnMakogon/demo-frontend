@@ -1,17 +1,64 @@
-<h1>{{title}}</h1>
+<button mat-raised-button color="primary" class="custom-button" (click)="cancel()">Cancel</button>
+<h1 class="custom-label">{{title}}</h1>
+<div class="form-container">
   <div class="container">
-    <input type="text" placeholder="Enter Username" [(ngModel)]="studentAuth.fio" required>
+    <mat-form-field appearance="fill" class="castom-input">
+      <mat-label>Enter FIO</mat-label>
+      <input matInput type="text" placeholder="Enter FIO" [(ngModel)]="studentAuth.fio" required>
+    </mat-form-field>
 
-    <input type="password" placeholder="Enter Password" [(ngModel)]="studentAuth.password_id" required>
+    <div class="castom-form-container">
+      <mat-form-field class="form-field">
+        <mat-select placeholder="Course" [(ngModel)]="studentAuth.course"
+          (selectionChange)="onCourseChange($event.value)">
+          <mat-option *ngFor="let c of courses" [value]="c">
+            {{c}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <input type="text" placeholder="Enter Group" [(ngModel)]="studentAuth.group" required>
+      <ng-container *ngIf="departments.length > 0; else noDepartments">
+        <mat-form-field class="form-field">
+          <mat-select placeholder="Department" [(ngModel)]="studentAuth.departmerntName"
+            (selectionChange)="onDepartmentChange($event.value)">
+            <mat-option *ngFor="let d of departments" [value]="d">
+              {{d}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
 
-    <input type="text" placeholder="Enter PhoneNumber" [(ngModel)]="studentAuth.phoneNumber" required>
+      <ng-template #noDepartments>
+        <div class="placeholder">
+          <h2 class="custom-label"> This course does not have a department </h2>
+        </div>
+      </ng-template>
 
-    На него будет отправлено письмо с подтверждением
-    <input type="text" placeholder="Enter Email" [(ngModel)]="studentAuth.email" required>
+      <mat-form-field class="form-field">
+        <mat-select placeholder="Group" [(ngModel)]="studentAuth.group">
+          <mat-option *ngFor="let g of groups" [value]="g">
+            {{g}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-    <button class="right-align" mat-raised-button color="primary"
-    (click)="registration()"  routerLink="/login">Registration</button>
+    <mat-form-field appearance="fill" class="castom-input">
+      <mat-label>Enter Phone Number</mat-label>
+      <input matInput type="text" placeholder="Enter Phone Number" [(ngModel)]="studentAuth.phoneNumber" required>
+    </mat-form-field>
 
+    <mat-form-field appearance="fill" class="castom-input">
+      <mat-label>Enter your email, a confirmation email will be sent to it</mat-label>
+      <input matInput type="text" placeholder="Enter Email" [(ngModel)]="studentAuth.email" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="castom-input">
+      <mat-label>Enter Password</mat-label>
+      <input matInput type="password" placeholder="Enter Password" [(ngModel)]="studentAuth.passwordId" required>
+    </mat-form-field>
+
+    <button class="right-align" mat-raised-button color="primary" (click)="registration()"
+      routerLink="/login">Registration</button>
   </div>
+</div>

@@ -1,17 +1,42 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-
-import {io} from 'socket.io-client';
-import { NewsletterDTO } from '../dto/NewsletterDTO';
-import { EmailTableComponent } from '../emailTable/emailTable.component';
-
-const SERVER_URL = 'http://localhost:8080';
+import { Subject } from 'rxjs';
+import * as SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketServiceService {
-  private socket: WebSocket;
+ /* private stompClient: any;
+  private currentUser: { id: string };
+
+  constructor() {
+    this.stompClient = stompClient;
+    this.currentUser = currentUser;
+
+    const socket = new SockJS('http://localhost:8080/ws');
+    const stompClient = Stomp.over(socket);
+    stompClient.connect({}, this.onConnected, this.onError);*/
+
+    /*const Stomp = require("stompjs");
+    var SockJS = require("sockjs-client");
+    SockJS = new SockJS("http://localhost:8080/ws");
+    const stompClient = Stomp.over(SockJS);
+    stompClient.connect({}, onConnect, onError);*/
+  }
+
+  /*onError = (error: string) => {
+    console.error('Error: ' + error);
+  };
+
+  public onConnected(): void {
+    console.log("connected");
+
+    this.stompClient.subscribe(); //здесь изначатьно: "/user/" + currentUser.id + "/queue/messages", onMessageReceived
+}
+
+
+  /*private socket: WebSocket;
   public message: Subject<NewsletterDTO> = new Subject<NewsletterDTO>();
   private greeting: NewsletterDTO;
 
@@ -22,16 +47,19 @@ export class WebsocketServiceService {
   }
   private connect(): void{
 
-    this.socket.onopen = (event) => {   // Событие при успешном открытии соединения
+    this.socket.onopen = (event: Event) => {   // Событие при успешном открытии соединения    это происходит 101 Switching Protocols
       console.log('Connected: ', event);
-      this.socket.send(JSON.stringify({ action: 'subscribe', topic: '/topic/greetings'}));
+      this.socket.send(JSON.stringify({ type: 'SUBSCRIBE', channel: '/topic/greetings'}));
+      this.subscribe();
     };
 
-    this.socket.onmessage = (event) => { //получение данных, автоматически срабатывает, когда приходит ответ с сервера
-      this.setMess(event);
+
+    this.socket.onmessage = (event: MessageEvent) => { //получение данных, автоматически срабатывает, когда приходит ответ с сервера
+      console.log("OnMessage: ", event);
+      this.setMess(event);              //это не работает
     };
 
-    this.socket.onclose = (event) => {
+    this.socket.onclose = (event: CloseEvent) => {  //работает кайф
       console.log('Disconnected: ', event);
     };
 
@@ -40,18 +68,21 @@ export class WebsocketServiceService {
     };
 
   }
-  sendName(nl: NewsletterDTO): void {     // заходит сюда
+  //
+  sendName(nl: NewsletterDTO): void {     // заходит сюда все ок
     if (this.socket.readyState === WebSocket.OPEN) {
       debugger;
       this.socket.send(JSON.stringify({
         destination: '/app/hello',
         headers: {},
-        body: JSON.stringify({nl})
+        payload: nl
       }));
     } else {
       console.error('Websocket is not connected.');
     }
   }
+
+  //сохранение ответа
   private setMess(event: MessageEvent): any {
     const message = JSON.parse(event.data);
       if (message.channel === '/topic/greetings') {
@@ -69,6 +100,29 @@ export class WebsocketServiceService {
     }
   }
 
+  onMessageHandler(event: any): void {
+    console.log("Получено сообщение: " + event.data);
+  }
+
+  public subscribe() {
+    const message = { type: 'SUBSCRIBE', destination: '/topic/greetings' };
+    this.socket.send(JSON.stringify(message));
+  }*/
+
+
+/*this.socket.onmessage = (event: MessageEvent) => {
+        this.handleSubscriptionConfirmation(event.data);
+      }
+
+  handleSubscriptionConfirmation(data: any):void {
+    const message = JSON.parse(data);
+    if (message.type === 'SUBSCRIPTION_CONFIRMATION' && message.topic === '/topic/greetings') {
+      console.log("Подписка на топик '/topic/greetings' успешно выполнена.");
+
+      this.socket.onmessage = this.onMessageHandler;
+    }
+  }
+*/
   /*private socket : any;
 
     public initSocket(): void {
@@ -158,7 +212,7 @@ export class WebsocketServiceService {
     };
   }*/
  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-  /*private stompClient: StompJs.Client;
+ /* private stompClient: StompJs.Client;
 
   constructor(){
     this.stompClient = new StompJs.Client({
@@ -283,4 +337,4 @@ export class WebsocketServiceService {
 
     //this.stompClient.send("/app/newsletter", {}, JSON.stringify({'name': name}));
   }*/
-}
+//}

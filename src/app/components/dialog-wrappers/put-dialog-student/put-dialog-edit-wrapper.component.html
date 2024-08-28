@@ -6,14 +6,41 @@
     [(ngModel)]="editingStudent.fio" required>
   </mat-form-field>
   <mat-form-field classs="full-width-input">
-    <input matInput type="text" placeholder="New Surname of Student"
-    [(ngModel)]="editingStudent.group" required>
-  </mat-form-field>
-  <mat-form-field classs="full-width-input">
     <input matInput type="text" placeholder="New PhoneNumber of Student"
     [(ngModel)]="editingStudent.phoneNumber" required>
   </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Course" [(ngModel)]="editingStudent.course" (selectionChange)="onCourseChange($event.value)">
+      <mat-option *ngFor="let c of courses" [value]="c">
+        {{c}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <ng-container *ngIf="departments.length > 0; else noDepartments">
+    <mat-form-field>
+      <mat-select placeholder="Department" [(ngModel)]="editingStudent.departmentName" (selectionChange)="onDepartmentChange($event.value)">
+        <mat-option *ngFor="let d of departments" [value]="d">
+          {{d}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+
+  <ng-template #noDepartments>
+    <div> This course does not have a department </div>
+  </ng-template>
+
+  <mat-form-field>
+    <mat-select placeholder="Group" [(ngModel)]="editingStudent.group">
+      <mat-option *ngFor="let g of groups" [value]="g">
+        {{g}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
+
 <div mat-dialog-actions>
   <button mat-raised-button (click)="onNoClick()">Cancel</button>
   <button class="right-align" mat-raised-button color="primary"

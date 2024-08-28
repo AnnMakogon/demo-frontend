@@ -1,6 +1,7 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { StudentRegistrDTO } from 'src/app/dto/StudentRegistrDTO';
+import { StudentRegistr } from 'src/app/dto/StudentRegistr';
 import { AuthServiceService } from '../auth-service.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn:'root'
@@ -15,20 +16,77 @@ export class RegistrationComponent implements OnInit {
 
   title = 'Registration!';
 
-  studentAuth: StudentRegistrDTO;
+  course: string;
+  group: string;
 
-  constructor(private authService : AuthServiceService,)
+  studentAuth: StudentRegistr;
+  showDepartmentMessage: boolean = false;
+
+  constructor(private authService : AuthServiceService,
+              private route: Router,
+  )
   {
-    this.studentAuth = new StudentRegistrDTO();
+    this.studentAuth = new StudentRegistr();
+    this.course = "";
+    this.group = "";
   }
 
   ngOnInit() {
   }
 
   registration(): void {
-    console.log("Registration User: " + this.studentAuth.fio + this.studentAuth.password_id);
-    this.authService.registration(this.studentAuth);
-    alert("Проверьте почту :)");
+    console.log("Registration User: " + this.studentAuth.fio + this.studentAuth.passwordId);
+    this.authService.registration(this.studentAuth).subscribe(() => {
+      alert("Проверьте почту :)");
+    });
+  }
+
+  cancel(): void {
+    this.route.navigate(['/login'])
+  }
+
+  courses: Array<string> = ["1", "2", "3"];
+  departments: Array<string> = [];
+  groups: Array<string> = [];
+
+
+  courseDepartment: { [key: string]: string[] } = {
+    "1": [],
+    "2": ["KFA", "KMA", "KUCP"],
+    "3": ["KFA", "KMA", "KUCP"],
+  }
+
+  departmentGroups: {[key: string]: {[department: string]: string[] } } = {
+    "2": {
+      "KFA": ["1.1", "1.2", "1.3"],
+      "KMA": ["2.1"],
+      "KUCP": ["3.1", "3.2"]
+    },
+    "3": {
+      "KFA": ["1.1", "1.2", "1.3"],
+      "KMA": ["2.1"],
+      "KUCP": ["3.1", "3.2"]
+    }
+  }
+
+  onCourseChange(selectedCourse: string): void {
+    if (this.courseDepartment[selectedCourse].length === 0) {
+      this.groups = ["1.1", "1.2", "1.3", "2.1", "3.1", "3.2"];
+      this.departments = [];
+      this.showDepartmentMessage = true;
+    } else {
+      this.departments = this.courseDepartment[selectedCourse];
+      this.groups = [];
+      this.studentAuth.departmerntName = '';
+      this.studentAuth.group = '';
+      this.showDepartmentMessage = false;
+    }
+  }
+
+  onDepartmentChange(selectedDepartment: string): void {
+    const course = this.studentAuth.course;
+    this.groups = this.departmentGroups[course]?.[selectedDepartment] || [];
+    this.studentAuth.group = '';
   }
 
 }
