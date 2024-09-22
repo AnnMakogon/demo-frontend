@@ -17,9 +17,9 @@ import { Router } from '@angular/router';
   selector: 'app-student-table',
   templateUrl: './student-table.component.html',
   styleUrls: ['./student-table.component.scss'],
-  providers:[LogoutAuthComponent],
+  providers: [LogoutAuthComponent],
 })
-export class MaterialTableComponent implements OnInit{
+export class MaterialTableComponent implements OnInit {
 
   pageSize: number = 10;
   pageNum: number = 0;
@@ -51,10 +51,10 @@ export class MaterialTableComponent implements OnInit{
     this.persUser = new User();
   }
 
-  ngOnInit(): void{
-    console.log ("Material Table Component");
+  ngOnInit(): void {
+    console.log("Material Table Component");
     const userData = sessionStorage.getItem("0");
-    if(userData) {
+    if (userData) {
       this.persUser = JSON.parse(userData);
     }
     this.updateData();
@@ -69,13 +69,17 @@ export class MaterialTableComponent implements OnInit{
   }
 
   updateData() {
-    this.baseService.getStudentsPage(this.pageNum, this.pageSize, this.column, this.direction, this.filterValue).subscribe( data => {
+    this.baseService.getStudentsPage(this.pageNum, this.pageSize, this.column, this.direction, this.filterValue).subscribe(data => {
+      data.content.forEach((student: StudentFullTable) => {
+        student.group = student.group.slice(6).replace("_", ".");
+        student.course = student.course.slice(7);
+      });
       this.dataSource.data = data.content;
       this.totalDataLength = data.totalElements;
     });
   }
 
-  sortData( sortState: Sort ){
+  sortData(sortState: Sort) {
     if (sortState.direction) {
       this.direction = sortState.direction;
       this.column = sortState.active;
@@ -86,23 +90,24 @@ export class MaterialTableComponent implements OnInit{
     this.updateData();
   }
 
-  filterData( event: Event ) {
+  filterData(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.updateData();
   }
 
-  updateStudent(student : StudentUpdate): void {
+  updateStudent(student: StudentUpdate): void {
     const dialogPutStudent = this.dialog.open(PutDialogEditWrapperComponent, {
       width: '400px',
       data: student
     });
-    dialogPutStudent.afterClosed().subscribe((result : StudentUpdate) => {
-      if(result != null) {
-        debugger;
-        console.log ("puting student: " + student.fio);
-        this.baseService.updateStudent(result, student.id).subscribe( () => {
+    dialogPutStudent.afterClosed().subscribe((result: StudentUpdate) => {
+      if (result != null) {
+        console.log("puting student: " + student.fio);
+        result.group = "GROUP_" + ( result.group.replace(".","_"));
+        result.course = "COURSE_" + result.course;
+        this.baseService.updateStudent(result, student.id).subscribe(() => {
           this.updateData();
-       });
+        });
       }
     });
   }
@@ -112,12 +117,12 @@ export class MaterialTableComponent implements OnInit{
       width: '400px',
       data: student
     });
-    dialogDelStudent.afterClosed().subscribe((result : Boolean) => {
-      if(result){
+    dialogDelStudent.afterClosed().subscribe((result: Boolean) => {
+      if (result) {
         console.log("delete student");
         const id = Number(student.id);
         this.baseService.deleteStudent(id).subscribe(() => {
-        this.updateData();
+          this.updateData();
         });
       }
     })

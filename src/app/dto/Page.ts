@@ -1,5 +1,5 @@
 export class Page<T> {
-  constructor(){
+  constructor() {
     this.content = [];
     this.totalElements = 0;
   }

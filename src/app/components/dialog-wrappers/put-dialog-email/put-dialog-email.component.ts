@@ -1,6 +1,4 @@
-import { formatDate } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DateForChange } from 'src/app/dto/DateForChange';
 import { NewsletterWithDate } from 'src/app/dto/NewsletterWithDate';
@@ -13,20 +11,18 @@ import { NewsletterWithDate } from 'src/app/dto/NewsletterWithDate';
 export class PutDialogEmailComponent implements OnInit, AfterViewInit {
 
   editingNl: NewsletterWithDate;
-  originalDate: string = "";
   selectedDate: Date | null;
 
   constructor(
     public dialogRef: MatDialogRef<PutDialogEmailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: NewsletterWithDate,
     private cdr: ChangeDetectorRef) {
-      this.editingNl = data ? data : new NewsletterWithDate();
-      if (this.editingNl.date) {
-        this.originalDate = this.editingNl.date.toString();
-        this.selectedDate = this.parseDate(this.originalDate);
-      } else {
-        this.selectedDate = null;
-      }
+    this.editingNl = data ? data : new NewsletterWithDate();
+    if (this.editingNl.date) {
+      this.selectedDate = this.parseDate(this.editingNl.date.toString());
+    } else {
+      this.selectedDate = null;
+    }
   }
 
   onNoClick(): void {
@@ -34,27 +30,43 @@ export class PutDialogEmailComponent implements OnInit, AfterViewInit {
   }
 
   getDate(event: any) {
-    this.editingNl.date.calendarDate = formatDate(event.value, 'dd.MM.yyyy', 'en-US');
+    const selectedDate: Date = event.value;
+    const localDate = new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000);
+    this.editingNl.date.calendarDate = localDate.toISOString();
+    console.log("this.date: " + this.editingNl.date.calendarDate)
   }
 
   ngOnInit() {
-      //if (typeof this.editingNl.date === 'string') {
-      if (this.data && this.data.date){
-        const dateStr = this.data.date.toString() as string;
-        const dateParts = dateStr.split(' ');
-        const timeParts = dateParts[1].split(':');
+    if (this.data && this.data.date) {
+
+      const dateStr = this.data.date.toString() as string;
+      const dateParts = dateStr.split(' ');
+
+      if (dateParts.length === 2) {
+        const timeParts = dateParts[0].split(':');
+        const datePart = dateParts[1];
+
         this.editingNl.date = new DateForChange();
-        this.editingNl.date.calendarDate = dateParts[0];
+
         this.editingNl.date.hour = timeParts[0];
         this.editingNl.date.minute = timeParts[1];
-      } else if (!this.editingNl.date) {
+
+        const [day, month, year] = datePart.split('.');
+
+        this.editingNl.date.calendarDate = `${day}.${month}.${year}`;
+
+      } else {
         this.editingNl.date = new DateForChange();
         this.selectedDate = null;
       }
+    } else if (!this.editingNl.date) {
+      this.editingNl.date = new DateForChange();
+      this.selectedDate = null;
+    }
   }
 
   parseDate(dateString: string): Date {
-    const [datePart, timePart] = dateString.split(' ');
+    const [timePart, datePart] = dateString.split(' ');
     const [day, month, year] = datePart.split('.').map(part => parseInt(part, 10));
     const [hour, minute] = timePart.split(':').map(part => parseInt(part, 10));
     return new Date(year, month - 1, day, hour, minute);

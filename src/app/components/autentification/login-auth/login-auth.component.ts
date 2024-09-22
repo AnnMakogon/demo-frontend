@@ -1,14 +1,13 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { AuthServiceService } from '../auth-service.service';
+import { AuthServiceService } from '../../../service/auth-service.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentRegistr } from 'src/app/dto/StudentRegistr';
 import { UserLogin } from 'src/app/dto/UserLogin';
-import { WebsocketServiceService } from 'src/app/service/websocket-service.service';
 import { User } from 'src/app/dto/User';
 
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root'
 })
 
 @Component({
@@ -16,17 +15,16 @@ import { User } from 'src/app/dto/User';
   templateUrl: './login-auth.component.html',
   styleUrls: ['./login-auth.component.scss']
 })
-export class LoginAuthComponent implements OnInit{
+export class LoginAuthComponent implements OnInit {
 
   title = 'Login';
 
   thisUser: UserLogin;
 
-  constructor( private authService : AuthServiceService,
-               private route: Router,
-               public dialog: MatDialog,
-               private webSocketService: WebsocketServiceService
-  ){
+  constructor(private authService: AuthServiceService,
+    private router: Router,
+    public dialog: MatDialog,
+  ) {
     this.thisUser = new StudentRegistr();
   }
 
@@ -34,18 +32,18 @@ export class LoginAuthComponent implements OnInit{
     sessionStorage.removeItem("0");
   }
 
-  login():void{                                    //при логинивании устанавливается коннект с вебсокетом
+  login(): void {
     console.log("full User: " + this.thisUser.fio);
 
-    this.authService.loginUser(this.thisUser).subscribe((result: User) =>{
+    this.authService.loginUser(this.thisUser).subscribe((result: User) => {
       sessionStorage.setItem("0", JSON.stringify(result));
       console.log(result.username);
-      this.route.navigate(['/tabs/students'])
+      this.router.navigate(['/tabs/students'])
     });
   }
 
-  registration(): void{
-    this.route.navigate(['/registration']);
+  registration(): void {
+    this.router.navigate(['/registration']);
   }
 
 }

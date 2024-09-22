@@ -2,18 +2,14 @@ form {
   border: 3px solid #f1f1f1;
 }
 
-/* Full-width inputs */
 input[type=text], input[type=password] {
   width: 100%;
   padding: 12px 20px;
-  //margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
 
-
-/* Add padding to containers */
 .container {
   display: flex;
   flex-direction: column;
@@ -21,7 +17,6 @@ input[type=text], input[type=password] {
   text-align: center;
 }
 
-/* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
   span.psw {
       display: block;
@@ -48,15 +43,15 @@ h1.custom-label {
   margin-top: 30px;
   text-align: center;
   font-family: 'Arial', cursive !important;
-  margin-bottom: 10px; /* Уменьшение пространства между заголовком и формой */
+  margin-bottom: 10px;
 }
 
 .form-container {
-  background-color:hsl(226, 79%, 66%); /* Голубой оттенок */
-  border-radius: 15px; /* Закругленные углы */
-  padding: 20px; /* Внутренние отступы */
-  margin: 0 auto; /* Выравнивание по центру */
-  max-width: 630px; /* Максимальная ширина */
+  background-color:hsl(226, 79%, 66%);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 630px;
   max-height: 700px;
 }
 
@@ -64,76 +59,76 @@ h1.custom-label {
   width: 500px;
   margin-bottom: 20px;
   flex: 1;
-  margin-right: 16px; /* Отступ между полями */
+  margin-right: 16px;
 }
 
 mat-form-field {
-  margin-bottom: 0; /* Убираем отступ снизу */
+  margin-bottom: 0;
 }
 
-/* Убираем отступы у div, который содержит текст */
+
 div {
-  margin: 0; /* Убираем любые отступы */
-  padding: 0; /* Убираем любые внутренние отступы */
+  margin: 0;
+  padding: 0;
 }
 
 .castom-form-container {
   display: flex;
   align-items: center;
-  gap: 5px; /* Расстояние между полями */
+  gap: 5px;
 }
 
-/* Поля для формы */
+
 .form-field {
-  flex: 1; /* Позволяет полям занимать равное пространство */
+  flex: 1;
 }
 
-/* Плейсхолдер для текстового сообщения */
+
 .placeholder {
-  width: 212px; /* Ширина для блока с текстом */
-  height: 50px; /* Высота для блока с текстом */
+  width: 212px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc; /* Обводка для визуального отделения */
-  box-sizing: border-box; /* Включает бордер в размер блока */
+  border: 1px solid #ccc;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
   position: relative;
   transform: translateY(-9px);
 }
 
-/* Стили для заголовка */
+
 h2.custom-label {
-  margin: 0; /* Убираем отступы */
-  padding: 0; /* Убираем внутренние отступы */
+  margin: 0;
+  padding: 0;
   text-align: center;
   font-family: 'Arial', cursive !important;
-  font-size: 15px; /* Меньший размер шрифта для соответствия размеру блока */
+  font-size: 15px;
 }
 
-/* Применяем стили для всех mat-form-field с использованием ::ng-deep */
+
 ::ng-deep .mat-form-field {
-  width: 25px; /* Ширина самого поля ввода */
+  width: 25px;
 }
 
 ::ng-deep .mat-form-field .mat-form-field-infix {
-  width: 100%; /* Заполняет ширину родительского контейнера */
+  width: 100%;
 }
 
 ::ng-deep .mat-select {
-  width: 25px; /* Ширина для выпадающего списка */
-  overflow: hidden; /* Скрываем содержимое, которое выходит за границы */
+  width: 25px;
+  overflow: hidden;
 }
 
 ::ng-deep .mat-select .mat-select-trigger {
-  width: 25px; /* Устанавливаем ширину для области триггера выбора */
-  overflow: hidden; /* Скрываем лишний текст */
-  text-overflow: ellipsis; /* Добавляем многоточие, если текст слишком длинный */
-  white-space: nowrap; /* Предотвращаем перенос текста */
+  width: 25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 ::ng-deep .mat-select-panel {
-  width: 25px; /* Ширина выпадающего списка */
+  width: 25px;
 }
 

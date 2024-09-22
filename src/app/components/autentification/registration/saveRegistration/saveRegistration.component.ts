@@ -21,28 +21,25 @@ export class SaveRegistrationComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const studentData = params['data'];
       if (studentData) {
-        debugger;
         const decodedData = JSON.parse(decodeURIComponent(studentData)) as StudentRegistr;
         this.confirmRegistration(decodedData);
-        //window.location.href = `http://localhost:8080/api/registr?data=${encodeURIComponent(data)}`;
       } else {
         this.router.navigate(['/registration']);
       }
     })
-   this.router.navigate(['/login']);
+    this.router.navigate(['/login']);
   }
 
   confirmRegistration(data: StudentRegistr) {
-    debugger;
     this.http.post<StudentRegistr>('http://localhost:8080/api/registr', data)
-    .subscribe( response => {
-      console.log(response);
+      .subscribe(response => {
+        console.log(response);
         this.router.navigate(['/login']);
       },
-      error => {
-       this.router.navigate(['/registration']);
-      }
-    )
+        error => {
+          this.router.navigate(['/registration']);
+        }
+      )
   }
 
 }

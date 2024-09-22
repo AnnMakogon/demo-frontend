@@ -2,16 +2,16 @@
 <div mat-dialog-content style="display: online; padding: 0px; margin:auto">
 
   <mat-form-field class="full-width-input">
-    <input matInput type="text" placeholder="New Name of Student"
-    [(ngModel)]="editingStudent.fio" required>
+    <input matInput type="text" placeholder="New Name of Student" [(ngModel)]="editingStudent.fio" required>
   </mat-form-field>
   <mat-form-field classs="full-width-input">
-    <input matInput type="text" placeholder="New PhoneNumber of Student"
-    [(ngModel)]="editingStudent.phoneNumber" required>
+    <input matInput type="text" placeholder="New PhoneNumber of Student" [(ngModel)]="editingStudent.phoneNumber"
+      required>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Course" [(ngModel)]="editingStudent.course" (selectionChange)="onCourseChange($event.value)">
+    <mat-select placeholder="Course" [(ngModel)]="editingStudent.course"
+      (selectionChange)="onCourseChange($event.value)">
       <mat-option *ngFor="let c of courses" [value]="c">
         {{c}}
       </mat-option>
@@ -20,7 +20,8 @@
 
   <ng-container *ngIf="departments.length > 0; else noDepartments">
     <mat-form-field>
-      <mat-select placeholder="Department" [(ngModel)]="editingStudent.departmentName" (selectionChange)="onDepartmentChange($event.value)">
+      <mat-select placeholder="Department" [(ngModel)]="editingStudent.departmentName"
+        (selectionChange)="onDepartmentChange($event.value)">
         <mat-option *ngFor="let d of departments" [value]="d">
           {{d}}
         </mat-option>
@@ -43,6 +44,5 @@
 
 <div mat-dialog-actions>
   <button mat-raised-button (click)="onNoClick()">Cancel</button>
-  <button class="right-align" mat-raised-button color="primary"
-    [mat-dialog-close]="editingStudent">Update</button>
+  <button class="right-align" mat-raised-button color="primary" [mat-dialog-close]="editingStudent">Update</button>
 </div>

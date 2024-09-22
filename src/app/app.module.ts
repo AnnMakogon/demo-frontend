@@ -1,4 +1,4 @@
-import { NgModule/*, CUSTOM_ELEMENTS_SCHEMA*/ } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -50,7 +50,7 @@ import { MatIconModule as matIconModule } from '@angular/material/icon';
     EmailTableComponent,
     PutDialogEmailComponent,
     PutDataDialogEmailComponent
-   ],
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -77,9 +77,8 @@ import { MatIconModule as matIconModule } from '@angular/material/icon';
   ],
   exports: [RouterModule],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent],
-  //schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule { }

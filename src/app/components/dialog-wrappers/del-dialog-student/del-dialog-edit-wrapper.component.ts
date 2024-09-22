@@ -12,17 +12,17 @@ export class DelDialogEditWrapperComponent implements OnInit {
   decision: StudentFullTable;
 
   constructor(public dialogRef: MatDialogRef<DelDialogEditWrapperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StudentFullTable){
-      this.decision = data;
-    }
+    @Inject(MAT_DIALOG_DATA) public data: StudentFullTable) {
+    this.decision = data;
+  }
 
-  noDel():void {
+  noDel(): void {
     this.dialogRef.close(false);
   }
   yesDel(): void {
     this.dialogRef.close(true);
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
 }

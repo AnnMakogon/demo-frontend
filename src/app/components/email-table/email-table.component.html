@@ -12,12 +12,12 @@
 
   <br>
 
-  <button mat-raised-button color="primary"(click)="createNewsletter()">Create newsletter</button>
+  <button mat-raised-button color="primary" (click)="createNewsletter()">Create newsletter</button>
 </div>
 
-  <br>
+<br>
 
-<div class="mat-elevation-z8 indent"  *ngIf="dataSource">
+<div class="mat-elevation-z8 indent" *ngIf="dataSource">
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
 
     <ng-container matColumnDef="demo-id">
@@ -38,9 +38,11 @@
     <ng-container matColumnDef="demo-date">
       <th mat-header-cell *matHeaderCellDef> Date </th>
       <td width="15%" mat-cell *matCellDef="let newsletter"> {{newsletter.date}}
-        <button mat-raised-button class="material-icons-outlined" (click)="changeDateNl(newsletter)">
-          edit_calendar
-        </button>
+        <ng-container *ngIf="newsletter.sent === 'Letter in queue'">
+          <button mat-raised-button class="material-icons-outlined" (click)="changeDateNl(newsletter)">
+            edit_calendar
+          </button>
+        </ng-container>
       </td>
     </ng-container>
 
@@ -49,20 +51,22 @@
       <td width="5%" mat-cell *matCellDef="let newsletter"> {{newsletter.sent}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="demo-status" >
+    <ng-container matColumnDef="demo-status">
       <th mat-header-cell *matHeaderCellDef [hidden]="!showStatus"> Status </th>
       <td width="5%" mat-cell *matCellDef="let newsletter" [hidden]="!showStatus"> {{newsletter.status}} </td>
     </ng-container>
 
     <ng-container matColumnDef="demo-action">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td width="15%" mat-cell *matCellDef="let mail">
-          <button mat-raised-button class="material-icons-outlined" (click)="changeNl(mail)">
+      <td width="15%" mat-cell *matCellDef="let newsletter">
+        <ng-container *ngIf="newsletter.sent === 'Letter in queue'">
+          <button mat-raised-button class="material-icons-outlined" (click)="changeNl(newsletter)">
             edit
           </button>
-          <button mat-raised-button class="material-icons-outlined" (click)="deleteNl(mail)">
+          <button mat-raised-button class="material-icons-outlined" (click)="deleteNl(newsletter)">
             delete
           </button>
+        </ng-container>
       </td>
     </ng-container>
 
@@ -71,14 +75,8 @@
 
   </table>
 
-  <mat-paginator
-              [length]="totalDataLength"
-              [pageSize]="pageSize"
-              [pageSizeOptions]="pageSizeOptions"
-              (page)="onPageChange($event)"
-               showFirstLastButtons
-               aria-label="Select page of Students">
+  <mat-paginator [length]="totalDataLength" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)" showFirstLastButtons aria-label="Select page of Students">
   </mat-paginator>
 
 </div>
-

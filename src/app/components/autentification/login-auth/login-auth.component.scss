@@ -6,26 +6,26 @@
 }
 
 mat-form-field {
-  width: 80%; /* Увеличено для заполнения контейнера */
+  width: 80%;
 }
 
 button {
-  width: 80%; /* Увеличено для заполнения контейнера */
-  margin-top: 10px; /* Промежуток между кнопками */
+  width: 80%;
+  margin-top: 10px;
 }
 
 h1.custom-label {
   margin-top: 100px;
   text-align: center;
   font-family: 'Arial', cursive !important;
-  margin-bottom: 10px; /* Уменьшение пространства между заголовком и формой */
+  margin-bottom: 10px;
 }
 
 .form-container {
-  background-color:hsl(226, 79%, 66%); /* Голубой оттенок */
-  border-radius: 15px; /* Закругленные углы */
-  padding: 20px; /* Внутренние отступы */
-  margin: 0 auto; /* Выравнивание по центру */
-  max-width: 400px; /* Максимальная ширина */
+  background-color:hsl(226, 79%, 66%);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 400px;
 }
 

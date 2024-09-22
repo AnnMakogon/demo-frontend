@@ -5,6 +5,7 @@ export class StudentFullTable {    //то, что передается в таб
     this.group = "";
     this.phoneNumber = "";
     this.departmentName = "";
+    this.course = "";
   }
 
   id: null | number;
@@ -12,4 +13,5 @@ export class StudentFullTable {    //то, что передается в таб
   group: string;
   phoneNumber: string;
   departmentName: string
+  course: string;
 }

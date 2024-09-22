@@ -12,13 +12,15 @@ import { SaveRegistrationComponent } from './components/autentification/registra
 
 const routes: Routes = [
   { path: 'login', component: LoginAuthComponent },
-  { path: '',  redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'registration', component: RegistrationComponent },
   { path: 'newNewsletter', component: CreateNewsletterComponent },
-  { path: 'tabs', component: TabsComponent, children:[
-    { path: 'students', component: MaterialTableComponent },
-    { path: 'newsletter', component: EmailTableComponent },
-  ]},
+  {
+    path: 'tabs', component: TabsComponent, children: [
+      { path: 'students', component: MaterialTableComponent },
+      { path: 'newsletter', component: EmailTableComponent },
+    ]
+  },
   { path: 'saveregistration', component: SaveRegistrationComponent }
 ];
 
@@ -27,6 +29,6 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forRoot(routes)],
   exports: [RouterModule],
-   declarations: []
+  declarations: []
 })
 export class AppRoutingModule { }

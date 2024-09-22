@@ -6,9 +6,9 @@ import { Observable, catchError, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ErrorInterceptorService implements HttpInterceptor{
+export class ErrorInterceptorService implements HttpInterceptor {
 
-  constructor(private route: Router) {}
+  constructor(private route: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(catchError(err => {

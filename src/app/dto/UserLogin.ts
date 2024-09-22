@@ -1,4 +1,4 @@
-export class UserLogin {           // для залогинивания
+export class UserLogin {
   constructor() {
     this.id = null;
     this.fio = "";

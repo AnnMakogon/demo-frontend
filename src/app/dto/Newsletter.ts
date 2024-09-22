@@ -1,7 +1,7 @@
 import { Address } from "./Address";
 
 export class Newsletter {
-  constructor(){
+  constructor() {
     this.id = null;
     this.date = "";
     this.text = "";
@@ -11,7 +11,7 @@ export class Newsletter {
     this.status = "";
   }
   id: null | number;
-  date: string;
+  date: string | Date;
   text: string;
   subject: string;
   address: Address[];

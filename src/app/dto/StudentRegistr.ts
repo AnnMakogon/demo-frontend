@@ -1,4 +1,4 @@
-export class StudentRegistr {    //то, что вводит при регестрации
+export class StudentRegistr {
   constructor() {
     this.id = null;
     this.fio = "";

@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { StudentFullTableDTO } from 'src/app/dto/StudentFullTableDTO';
+
 import { DelDialogEditWrapperComponent } from '../del-dialog-student/del-dialog-edit-wrapper.component';
+import { StudentFullTable } from 'src/app/dto/StudentFullTable';
 
 @Component({
   selector: 'app-del-dialog-email',
@@ -10,14 +11,14 @@ import { DelDialogEditWrapperComponent } from '../del-dialog-student/del-dialog-
 })
 export class DelDialogEmailComponent implements OnInit {
 
-  decision: StudentFullTableDTO;
+  decision: StudentFullTable;
 
   constructor(public dialogRef: MatDialogRef<DelDialogEditWrapperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StudentFullTableDTO) {
-      this.decision = data;
-    }
+    @Inject(MAT_DIALOG_DATA) public data: StudentFullTable) {
+    this.decision = data;
+  }
 
-  noDel():void {
+  noDel(): void {
     this.dialogRef.close(false);
   }
   yesDel(): void {

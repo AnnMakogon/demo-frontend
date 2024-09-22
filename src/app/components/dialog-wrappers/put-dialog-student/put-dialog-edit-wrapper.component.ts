@@ -17,16 +17,16 @@ export class PutDialogEditWrapperComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<PutDialogEditWrapperComponent>,
     @Inject(MAT_DIALOG_DATA) public data: StudentUpdate) {
-      this.editingStudent = data;
-      this.course = "";
-      this.group = "";
+    this.editingStudent = data;
+    this.course = "";
+    this.group = "";
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   courses: Array<string> = ["1", "2", "3"];
   departments: Array<string> = [];
@@ -38,7 +38,7 @@ export class PutDialogEditWrapperComponent implements OnInit {
     "3": ["KFA", "KMA", "KUCP"],
   }
 
-  departmentGroups: {[key: string]: {[department: string]: string[] } } = {
+  departmentGroups: { [key: string]: { [department: string]: string[] } } = {
     "2": {
       "KFA": ["1.1", "1.2", "1.3"],
       "KMA": ["2.1"],

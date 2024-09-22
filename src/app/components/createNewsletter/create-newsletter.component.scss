@@ -2,7 +2,6 @@ form {
   border: 3px solid #f1f1f1;
 }
 
-/* Full-width inputs */
 input[type=text], input[type=password] {
   width: 100%;
   padding: 12px 20px;
@@ -12,9 +11,7 @@ input[type=text], input[type=password] {
   box-sizing: border-box;
 }
 
-/* Set a style for all buttons */
 button {
-  background-color: #4CAF50;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
@@ -23,13 +20,10 @@ button {
   width: 100%;
 }
 
-/* Add a hover effect for buttons */
 button:hover {
   opacity: 0.8;
 }
 
-
-/* Add padding to containers */
 .container {
   display: flex;
   flex-direction: column;
@@ -37,13 +31,11 @@ button:hover {
   text-align: center;
 }
 
-/* The "Forgot password" text */
 span.psw {
   float: right;
   padding-top: 16px;
 }
 
-/* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
   span.psw {
       display: block;
@@ -53,13 +45,15 @@ span.psw {
       width: 100%;
   }
 }
+
 .header {
-  background-color: #0b0bab; /* Темно-серый цвет фона */
-  color: white; /* Белый цвет текста */
+  background-color: #0b0bab;
+  color: white;
   padding: 10px 0;
 }
+
 .header a {
-  color: white; /* Белый цвет ссылок */
+  color: white;
   padding: 14px 16px;
   text-decoration: none;
   text-align: center;
@@ -71,75 +65,42 @@ h1.custom-label {
   margin-top: 30px;
   text-align: center;
   font-family: 'Arial', cursive !important;
-  margin-bottom: 10px; /* Уменьшение пространства между заголовком и формой */
+  margin-bottom: 10px;
 }
 
 h2.custom-label {
   margin-top: 10px;
   text-align: center;
   font-family: 'Arial', cursive !important;
-  margin-bottom: 10px; /* Уменьшение пространства между заголовком и формой */
+  margin-bottom: 10px;
+}
+
+h3.custom-label {
+  margin-top: 10px;
+  text-align: center;
+  font-family: 'Arial', cursive !important;
+  margin-bottom: 10px;
+  font-size: 16px;
 }
 
 .form-container {
-  background-color:hsl(226, 79%, 66%); /* Голубой оттенок */
-  border-radius: 15px; /* Закругленные углы */
-  padding: 20px; /* Внутренние отступы */
-  margin: 0 auto; /* Выравнивание по центру */
-  max-width: 600px; /* Максимальная ширина */
+  background-color:hsl(226, 79%, 66%);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 600px;
   max-height: 700px;
+  margin-bottom: 20px;
 }
 
 mat-form-field {
-  width: 80%; /* Увеличено для заполнения контейнера */
-}
-
-/* Основной контейнер для выпадающего списка */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Скрытый контент основного выпадающего списка */
-/*.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 200px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}*/
-
-/* Показывает контент выпадающего списка при открытии */
-.dropdown-content.show {
-  display: block;
-}
-
-/* Скрытый контент вложенного выпадающего списка */
-.sub-dropdown-content {
-  display: none;
-  background-color: #f9f9f9;
-  padding-left: 10px; /* Отступ для визуальной иерархии */
-}
-
-/* Показывает контент вложенного выпадающего списка при открытии */
-.sub-dropdown-content.show {
-  display: block;
+  width: 80%;
 }
 
 .dropdown-container {
   position: relative;
   text-align:left;
 }
-
-/*.dropdown-container button {
-  background-color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  color: black;
-}*/
 
 .dropdown-content {
   position: absolute;
@@ -149,13 +110,11 @@ mat-form-field {
   border: 1px solid #ddd;
   padding: 10px;
   display: inline-block;
-  z-index: 1;
+  z-index: 10;
   border-radius: 5px;
 
   width: auto;
   height: auto;
-  max-width: 600px;
-  max-height: 600px;
 }
 
 .dropdown-content ul {
@@ -179,15 +138,6 @@ mat-form-field {
   float: right;
 }
 
-/*.dropdown-content button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-}*/
-
 .selected-addresses {
   display: flex;
   flex-wrap: wrap;
@@ -203,62 +153,6 @@ mat-form-field {
   color: #fff;
   border-right: 1px solid #fff;
 }
-
-/*.selected-addresses div {
-  padding: 5px;
-  border-bottom: 1px solid #ddd;
-}
-
-.selected-addresses div:last-child {
-  border-bottom: none;
-}*/
-
-/*.dropdown-content {
-  position: absolute;
-  top: 100%;
-  left: 17px;
-  background-color: white;
-  border: 1px solid #ddd;
-  padding: 10px;
-  display: block;
-  z-index: 1;
-  border-radius: 5px;
-}
-
-.dropdown-content li {
-  display: block;
-}
-
-.dropdown-content li ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.dropdown-content li ul li {
-  padding: 5px;
-  border-bottom: 1px solid #ddd;
-}
-
-.dropdown-content li ul li:last-child {
-  border-bottom: none;
-}
-
-.dropdown-content li ul li input[type="checkbox"] {
-  float: right;
-  margin-right: 10px;
-}
-
-
-.dropdown-content > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.dropdown-content > div input[type="checkbox"] {
-  margin-left: 10px;
-}*/
 
 .checkbox-container {
   display: flex;
@@ -320,48 +214,43 @@ div span {
 }
 
 .form-row {
-  display: flex; /* Используем Flexbox */
-  flex-direction: row; /* Располагаем элементы горизонтально */
-  justify-content: 10px; /* Распределяем пространство между элементами */
-  align-items: center; /* Выравниваем элементы по вертикали */
-  margin-bottom: 16px; /* Добавляем отступ снизу */
-  width: 100%; /* Ширина контейнера */
+  display: flex;
+  flex-direction: row;
+  justify-content: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+  width: 100%;
   gap: 10px;
 }
-
 
 .castom-text{
   width: 500px;
   margin-bottom: 20px;
-  flex: 1; /* Поля занимают равное пространство */
-  //min-width: 150px; /* Минимальная ширина поля */
-  //max-width: 400px; /* Максимальная ширина поля */
-  margin-right: 16px; /* Отступ между полями */
+  flex: 1;
+  margin-right: 16px;
 }
 
 .custom-text .mat-form-field-infix {
-  height: 60px; /* Установите высоту поля ввода */
+  height: 60px;
 }
 
 .custom-text .mat-label {
-  font-size: 16px; /* Размер шрифта для метки */
+  font-size: 16px;
 }
 
 .castom-subject{
   width: 500px;
   margin-bottom: 20px;
-  flex: 1; /* Поля занимают равное пространство */
-  //min-width: 150px; /* Минимальная ширина поля */
-  //max-width: 200px; /* Максимальная ширина поля */
-  margin-right: 16px; /* Отступ между полями */
+  flex: 1;
+  margin-right: 16px;
 }
 
 .custom-subject .mat-form-field-infix {
-  height: 60px; /* Установите высоту поля ввода */
+  height: 60px;
 }
 
 .custom-subject .mat-label {
-  font-size: 16px; /* Размер шрифта для метки */
+  font-size: 16px;
 }
 
 .castom-header{
@@ -380,4 +269,10 @@ div span {
   background-color:#6484ed;
   margin-bottom: 10px;
   margin-left: 10px;
+}
+
+.page-wrapper {
+  height: 100vh;
+  overflow-y: auto;
+  position: relative;
 }

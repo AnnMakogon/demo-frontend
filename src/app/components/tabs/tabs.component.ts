@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd  } from '@angular/router';
+import { Router } from '@angular/router';
 import { User } from 'src/app/dto/User';
 import { StudentServiceService } from 'src/app/service/student-service.service';
-import { MaterialTableComponent } from '../student-table/student-table.component';
-import { EmailTableComponent } from '../email-table/email-table.component';
 import { LogoutAuthComponent } from '../autentification/logout-auth/logout-auth.component';
 
 @Component({
@@ -19,17 +17,13 @@ export class TabsComponent implements OnInit {
 
   constructor(private baseService: StudentServiceService,
     private router: Router,
-    private logoutAut: LogoutAuthComponent, ){
-      this.persUser = new User();
+    private logoutAut: LogoutAuthComponent,) {
+    this.persUser = new User();
   }
-
-  /*navigateTo(route: string) {
-    this.router.navigate([route]);
-  }*/
 
   ngOnInit() {
     const userData = sessionStorage.getItem("0");
-    if(userData) {
+    if (userData) {
       this.persUser = JSON.parse(userData);
     }
     this.checkRole();

@@ -1,6 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { StudentRegistr } from 'src/app/dto/StudentRegistr';
-import { AuthServiceService } from '../auth-service.service';
+import { AuthServiceService } from '../../../service/auth-service.service';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class RegistrationComponent implements OnInit {
   showDepartmentMessage: boolean = false;
 
   constructor(private authService : AuthServiceService,
-              private route: Router,
+              private router: Router,
   )
   {
     this.studentAuth = new StudentRegistr();
@@ -42,7 +42,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   cancel(): void {
-    this.route.navigate(['/login'])
+    this.router.navigate(['/login'])
   }
 
   courses: Array<string> = ["1", "2", "3"];

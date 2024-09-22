@@ -1,7 +1,7 @@
 import { DateForChange } from "./DateForChange";
 
 export class NewsletterWithDate {
-  constructor(){
+  constructor() {
     this.id = null;
     this.date = new DateForChange();
     this.text = "";

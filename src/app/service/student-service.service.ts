@@ -7,7 +7,7 @@ import { StudentFullTable } from '../dto/StudentFullTable';
 import { Page } from '../dto/Page';
 
 const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'application/json'}),
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
 
 @Injectable({
@@ -25,17 +25,16 @@ export class StudentServiceService {
 
   direction: String = "";
 
-  constructor( private http: HttpClient ) { }
+  constructor(private http: HttpClient) { }
 
   getStudentsPage(page: Number, size: Number, column: String, direction: String, filter: String): Observable<Page<StudentFullTable>> {
     let params = new HttpParams()
-              .append('page', page.toString())
-              .append('size', size.toString())
-              .append('column', column.toString())
-              .append('direction', direction.toString())
-              .append('filter', filter.toString());
-
-    return this.http.get<Page<StudentFullTable>>(this.studentsUrl, {params});
+      .append('page', page.toString())
+      .append('size', size.toString())
+      .append('column', column.toString())
+      .append('direction', direction.toString())
+      .append('filter', filter.toString());
+    return this.http.get<Page<StudentFullTable>>(this.studentsUrl, { params });
   }
 
   registration(student: StudentRegistr): Observable<StudentRegistr> {
@@ -44,16 +43,15 @@ export class StudentServiceService {
   }
 
   updateStudent(student: StudentUpdate, id: any): Observable<null | StudentUpdate> {
-    console.log ('put this student');
+    console.log('put this student');
     id = Number(id);
     return this.http.put<StudentUpdate>(this.studentsUrl, student, httpOptions).pipe();
   }
 
-  deleteStudent(id : Number): Observable<StudentFullTable> {
-    console.log ("Delete Student");
+  deleteStudent(id: Number): Observable<StudentFullTable> {
+    console.log("Delete Student");
     const url = `${this.studentsUrl}` + `${id}`;
-    debugger
-    return this.http.delete<StudentFullTable>(url).pipe();
+    return this.http.delete<StudentFullTable>(url, httpOptions).pipe();
   }
 
 }

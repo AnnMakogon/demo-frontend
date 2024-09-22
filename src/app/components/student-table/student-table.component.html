@@ -61,13 +61,8 @@
 
   </table>
 
-  <mat-paginator
-              [length]="totalDataLength"
-              [pageSize]="pageSize"
-              [pageSizeOptions]="pageSizeOptions"
-              (page)="onPageChange($event)"
-               showFirstLastButtons
-               aria-label="Select page of Students">
+  <mat-paginator [length]="totalDataLength" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)" showFirstLastButtons aria-label="Select page of Students">
   </mat-paginator>
 
 </div>
