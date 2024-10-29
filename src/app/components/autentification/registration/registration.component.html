@@ -19,7 +19,7 @@
 
       <ng-container *ngIf="departments.length > 0; else noDepartments">
         <mat-form-field class="form-field">
-          <mat-select placeholder="Department" [(ngModel)]="studentAuth.departmerntName"
+          <mat-select placeholder="Department" [(ngModel)]="studentAuth.departmentName"
             (selectionChange)="onDepartmentChange($event.value)">
             <mat-option *ngFor="let d of departments" [value]="d">
               {{d}}

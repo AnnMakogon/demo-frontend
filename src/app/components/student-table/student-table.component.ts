@@ -71,8 +71,14 @@ export class MaterialTableComponent implements OnInit {
   updateData() {
     this.baseService.getStudentsPage(this.pageNum, this.pageSize, this.column, this.direction, this.filterValue).subscribe(data => {
       data.content.forEach((student: StudentFullTable) => {
-        student.group = student.group.slice(6).replace("_", ".");
-        student.course = student.course.slice(7);
+        if (student.group == null && student.course == null){
+          student.group = "?";
+          student.course = "?";
+        }else{
+          student.course = student.course.slice(7)
+          student.group = student.group.slice(6).replace("_", ".");
+        }
+
       });
       this.dataSource.data = data.content;
       this.totalDataLength = data.totalElements;

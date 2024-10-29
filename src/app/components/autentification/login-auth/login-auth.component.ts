@@ -34,6 +34,8 @@ export class LoginAuthComponent implements OnInit {
 
   login(): void {
     console.log("full User: " + this.thisUser.fio);
+    this.thisUser.fio.trim();
+    this.thisUser.passwordId.trim();
 
     this.authService.loginUser(this.thisUser).subscribe((result: User) => {
       sessionStorage.setItem("0", JSON.stringify(result));

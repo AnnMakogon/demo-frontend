@@ -34,10 +34,12 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
   }
 
+  //здесь переход на страничку, нормальный доступ
   registration(): void {
     console.log("Registration User: " + this.studentAuth.fio + this.studentAuth.passwordId);
     this.authService.registration(this.studentAuth).subscribe(() => {
-      alert("Проверьте почту :)");
+      this.router.navigate(['/login']);
+      alert("You can now log in");
     });
   }
 
@@ -77,7 +79,7 @@ export class RegistrationComponent implements OnInit {
     } else {
       this.departments = this.courseDepartment[selectedCourse];
       this.groups = [];
-      this.studentAuth.departmerntName = '';
+      this.studentAuth.departmentName = '';
       this.studentAuth.group = '';
       this.showDepartmentMessage = false;
     }

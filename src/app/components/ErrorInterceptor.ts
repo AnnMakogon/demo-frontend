@@ -27,6 +27,9 @@ export class ErrorInterceptorService implements HttpInterceptor {
         alert("Пользователь с таким именем уже есть, пожалуйста, введите другое имя");
         this.route.navigate(['/registration']);
       }
+      if ([400].includes(err.status)) {
+        alert("Введите все данные для заполнения");
+      }
 
       const error = err.error?.message || err.statusText;
       console.log(err);

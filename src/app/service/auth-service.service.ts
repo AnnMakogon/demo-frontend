@@ -43,4 +43,7 @@ export class AuthServiceService {
     return this.http.post<StudentRegistr>(userUrl, student, httpOptions);
   }
 
+  confirmation(user: User): Observable<StudentRegistr> {
+    return this.http.post<StudentRegistr>("/api/base/confirmation", user, httpOptions )
+  }
 }

@@ -8,7 +8,7 @@ export class StudentRegistr {
     this.passwordId = "";
     this.enable = true;
     this.email = "";
-    this.departmerntName = "";
+    this.departmentName = "";
     this.course = "";
   }
 
@@ -20,6 +20,6 @@ export class StudentRegistr {
   passwordId: string;
   enable: boolean;
   email: string;
-  departmerntName: string;
+  departmentName: string;
   course: string;
 }

@@ -1,7 +1,12 @@
 <div class="icon-panel">
   <h1 class="label"> {{title}} </h1>
+  <ng-container *ngIf="persUser.enableEmail == false">
+    <button class="right-align" mat-raised-button (click)="confirmation()"
+    color="primary">Confirmation the Email</button>
+  </ng-container>
   <button class="right-align material-icons-outlined" mat-raised-button (click)="logout()"
     color="primary">logout</button>
+
 </div>
 
 <mat-sidenav-container class="example-container">

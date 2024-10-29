@@ -45,7 +45,7 @@
     <ng-container matColumnDef="demo-action">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td width="15%" mat-cell *matCellDef="let student">
-        <ng-container *ngIf="persUser.id == student.id || persUser.role == '[ADMIN]'">
+        <ng-container *ngIf="(persUser.studentId == student.id && persUser.enableEmail == true) || persUser.role == '[ADMIN]'">
           <button mat-raised-button class="material-icons-outlined" (click)="updateStudent(student)">
             edit
           </button>

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { response } from 'express';
 import { StudentRegistr } from 'src/app/dto/StudentRegistr';
+import { User } from 'src/app/dto/User';
 
 @Component({
   selector: 'app-saveRegistration',
@@ -19,9 +20,9 @@ export class SaveRegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      const studentData = params['data'];
+      const studentData = params['id'];
       if (studentData) {
-        const decodedData = JSON.parse(decodeURIComponent(studentData)) as StudentRegistr;
+        const decodedData = JSON.parse(decodeURIComponent(studentData)) as number;
         this.confirmRegistration(decodedData);
       } else {
         this.router.navigate(['/registration']);
@@ -30,10 +31,13 @@ export class SaveRegistrationComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  confirmRegistration(data: StudentRegistr) {
-    this.http.post<StudentRegistr>('http://localhost:8080/api/registr', data)
+  confirmRegistration(data: number) {
+    this.http.post<User>('http://localhost:8080/api/registr', data)
       .subscribe(response => {
         console.log(response);
+        debugger;
+        sessionStorage.removeItem("0");
+        sessionStorage.setItem("0", JSON.stringify(response));
         this.router.navigate(['/login']);
       },
         error => {

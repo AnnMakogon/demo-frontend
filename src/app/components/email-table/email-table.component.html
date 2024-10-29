@@ -38,7 +38,7 @@
     <ng-container matColumnDef="demo-date">
       <th mat-header-cell *matHeaderCellDef> Date </th>
       <td width="15%" mat-cell *matCellDef="let newsletter"> {{newsletter.date}}
-        <ng-container *ngIf="newsletter.sent === 'Letter in queue'">
+        <ng-container *ngIf="newsletter.sent === 'Letter in queue' || newsletter.status === 'In Processing'">
           <button mat-raised-button class="material-icons-outlined" (click)="changeDateNl(newsletter)">
             edit_calendar
           </button>
@@ -59,7 +59,7 @@
     <ng-container matColumnDef="demo-action">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td width="15%" mat-cell *matCellDef="let newsletter">
-        <ng-container *ngIf="newsletter.sent === 'Letter in queue'">
+        <ng-container *ngIf="newsletter.sent === 'Letter in queue' || newsletter.status === 'In Processing'">
           <button mat-raised-button class="material-icons-outlined" (click)="changeNl(newsletter)">
             edit
           </button>
