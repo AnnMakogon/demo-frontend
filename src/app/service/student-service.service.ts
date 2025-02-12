@@ -39,7 +39,7 @@ export class StudentServiceService {
 
   registration(student: StudentRegistr): Observable<StudentRegistr> {
     console.log('registration');
-    return this.http.post<StudentRegistr>("api/base/registration/", student, httpOptions).pipe(); // не работеть запрос
+    return this.http.post<StudentRegistr>("api/base/registration/", student, httpOptions).pipe(); 
   }
 
   updateStudent(student: StudentUpdate, id: any): Observable<null | StudentUpdate> {

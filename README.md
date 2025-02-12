@@ -1,27 +1,29 @@
-# FirstApp
+# Check - Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.2.
+## Описание
 
-## Development server
+Check — это веб-приложение, разработанное на Angular, которое позволяет управлять студентами и рассылками по электронной почте. Приложение поддерживает регистрацию пользователей, подтверждение почты, а также автоматическую отправку рассылок по расписанию. 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Функциональность
 
-## Code scaffolding
+- **Роли пользователей**:
+  - **Админ**:
+    - Может добавлять, изменять и удалять студентов.
+    - Может создавать и управлять рассылками.
+  - **Студент**:
+    - Может изменять только свои данные.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Регистрация и подтверждение почты**: Пользователи могут зарегистрироваться, после чего им отправляется письмо для подтверждения адреса электронной почты.
 
-## Build
+- **Автоматические рассылки**: Рассылки выполняются автоматически по расписанию.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Формы**: Используются как готовые формы из библиотек Angular Material, так и самодельные формы для специфических задач.
 
-## Running unit tests
+## Технологии
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- **TypeScript**: Основной язык разработки.
+- **Angular**: Фреймворк для создания одностраничных приложений.
+- **Angular Material**: Библиотека компонентов для создания пользовательского интерфейса.
+- **Reactive Forms**: Для работы с формами и валидацией.
+- **HTTP Client**: Для взаимодействия с REST API.
+- **Логирование**: Для отслеживания действий пользователей и ошибок.

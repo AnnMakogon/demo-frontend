@@ -16,7 +16,7 @@ export class TabsComponent implements OnInit {
   title: string = "Hello";
   isAdmin: boolean = false;
 
-  constructor(private baseService: StudentServiceService,
+  constructor(
     private router: Router,
     private logoutAut: LogoutAuthComponent,
     private authService: AuthServiceService
